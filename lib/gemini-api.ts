@@ -107,15 +107,13 @@ export async function evaluateSkillLevel(
     }
 
     const prompt = `
-      A user scored ${correctCount}/${
-      questions.length
-    } (${percentCorrect}%) on a ${skillName} quiz.
+      A user scored ${correctCount}/${questions.length
+      } (${percentCorrect}%) on a ${skillName} quiz.
       Performance details:
       ${questions
         .map(
           (q, i) =>
-            `Q: "${q.question.substring(0, 50)}...": ${
-              userAnswers[i] === q.correctAnswer ? "Correct" : "Incorrect"
+            `Q: "${q.question.substring(0, 50)}...": ${userAnswers[i] === q.correctAnswer ? "Correct" : "Incorrect"
             }`
         )
         .join("\n")}
@@ -146,7 +144,7 @@ export async function evaluateSkillLevel(
       level: Math.round(
         (userAnswers.filter((a, i) => questions[i].correctAnswer === a).length /
           questions.length) *
-          100
+        100
       ),
       feedback: "Unable to generate detailed feedback. Please try again.",
     };
@@ -213,6 +211,99 @@ export async function generateCareerPathRecommendations(
     console.error("Error generating career recommendations:", error);
     return getMockCareerRecommendations(skills, interests);
   }
+}
+
+/**
+ * Generates job recommendations based on skills, interests, and background
+ */
+export async function generateJobRecommendations(
+  skills: Array<{ name: string; level: number }>,
+  interests: string[],
+  background: string,
+  count: number = 6 // Number of job recommendations to fetch
+): Promise<Array<{ id: number; companyName: string; jobRole: string; salary: string; location: string }>> {
+  try {
+    if (!GEMINI_API_KEY) {
+      console.warn("Gemini API key not found, using mock job recommendations");
+      return getMockJobRecommendations(count); // Use a mock function if needed
+    }
+
+    const skillsText = skills
+      .map((s) => `${s.name} (Level: ${s.level}/100)`)
+      .join(", ");
+    const prompt = `
+      Based on the following user profile:
+      Skills: ${skillsText}
+      Interests: ${interests.join(", ")}
+      Background: ${background}
+
+      Suggest ${count} specific job recommendations from top IT companies (like Google, Microsoft, Meta, Apple, Amazon, Netflix, etc.).
+      For each job, provide:
+      - companyName: string (The name of the company)
+      - jobRole: string (The specific job title)
+      - salary: string (Estimated salary range, e.g., "$150,000 - $180,000")
+      - location: string (Primary location, e.g., "Mountain View, CA" or "Remote")
+
+      Return the result as a JSON array of objects, where each object represents a job recommendation and includes the fields: "companyName", "jobRole", "salary", "location".
+      Assign a unique "id" number to each recommendation starting from 1.
+      Return *only* the JSON array, with no surrounding text or markdown formatting.
+    `;
+
+    let jsonText = "";
+
+    if (genAI) {
+      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      jsonText = response.text();
+    } else {
+      // Fallback to direct API call
+      const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          // Adjust generationConfig as needed, maybe higher temperature for more varied jobs?
+          generationConfig: { temperature: 0.4, maxOutputTokens: 1500 },
+        }),
+      });
+      const data: GeminiResponse = await response.json();
+      if (!data.candidates || data.candidates.length === 0) {
+        throw new Error("No candidates received from Gemini API");
+      }
+      jsonText = data.candidates[0].content.parts[0].text.trim();
+    }
+
+    // Extract the JSON array from the response text
+    const jsonMatch = jsonText.match(/\[[\s\S]*\]/);
+    if (!jsonMatch) {
+      console.error("Could not parse JSON array from Gemini response:", jsonText);
+      throw new Error("Could not parse JSON array from Gemini response");
+    }
+
+    // Parse and return the job recommendations
+    const jobs = JSON.parse(jsonMatch[0]);
+    // Ensure IDs are added if Gemini didn't include them (though the prompt asks for it)
+    return jobs.map((job: any, index: number) => ({ ...job, id: job.id || index + 1 })).slice(0, count);
+
+  } catch (error) {
+    console.error("Error generating job recommendations:", error);
+    // Fallback to mock data in case of error
+    return getMockJobRecommendations(count);
+  }
+}
+
+// Mock function for job recommendations (can be used as fallback)
+function getMockJobRecommendations(count: number) {
+  const mockJobs = [
+    { id: 1, companyName: "Google (Mock)", jobRole: "Software Engineer", salary: "$150,000", location: "Mountain View, CA" },
+    { id: 2, companyName: "Microsoft (Mock)", jobRole: "Cloud Solutions Architect", salary: "$165,000", location: "Redmond, WA" },
+    { id: 3, companyName: "Apple (Mock)", jobRole: "iOS Developer", salary: "$155,000", location: "Cupertino, CA" },
+    { id: 4, companyName: "Amazon (Mock)", jobRole: "Data Scientist", salary: "$140,000", location: "Seattle, WA" },
+    { id: 5, companyName: "Meta (Mock)", jobRole: "Machine Learning Engineer", salary: "$170,000", location: "Menlo Park, CA" },
+    { id: 6, companyName: "Netflix (Mock)", jobRole: "Senior Backend Engineer", salary: "$180,000", location: "Los Gatos, CA" },
+  ];
+  return mockJobs.slice(0, count);
 }
 
 // Mock data functions remain unchanged
