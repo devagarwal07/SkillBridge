@@ -1,0 +1,181 @@
+[
+  {
+    "id": "investor-001",
+    "name": "Future Talents Fund",
+    "type": "Venture Capital",
+    "logo": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80",
+    "description": "Investing in promising students with focus on tech and engineering fields",
+    "investmentRange": {
+      "min": 5000,
+      "max": 50000
+    },
+    "totalInvested": 2500000,
+    "activeInvestments": 45,
+    "successRate": 92,
+    "averageROI": 18.5,
+    "focusAreas": ["Computer Science", "Data Science", "AI", "Engineering"],
+    "requirements": {
+      "minimumEducationCreditScore": 680,
+      "preferredFields": ["STEM", "Computer Science", "Engineering"],
+      "preferredSkills": ["Programming", "Machine Learning", "Data Analysis"]
+    },
+    "fundingModels": [
+      {
+        "type": "Income Share Agreement",
+        "details": {
+          "percentageRange": [5, 15],
+          "termRange": [24, 48],
+          "capMultiplier": 1.5
+        }
+      },
+      {
+        "type": "Milestone-Based",
+        "details": {
+          "milestoneTypes": [
+            "Course Completion",
+            "Certification",
+            "Job Placement"
+          ],
+          "bonusAvailable": true
+        }
+      }
+    ],
+    "portfolio": [
+      {
+        "studentId": "user-001",
+        "amount": 15000,
+        "date": "2024-10-20T00:00:00Z",
+        "status": "active",
+        "milestones": 2,
+        "milestonesCompleted": 0
+      },
+      {
+        "studentId": "user-103",
+        "amount": 20000,
+        "date": "2024-09-05T00:00:00Z",
+        "status": "active",
+        "milestones": 3,
+        "milestonesCompleted": 1
+      }
+    ]
+  },
+  {
+    "id": "investor-002",
+    "name": "Education Forward",
+    "type": "Non-Profit Foundation",
+    "logo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80",
+    "description": "Supporting education access for underrepresented groups in all fields",
+    "investmentRange": {
+      "min": 2500,
+      "max": 25000
+    },
+    "totalInvested": 1800000,
+    "activeInvestments": 85,
+    "successRate": 88,
+    "averageROI": 12.5,
+    "focusAreas": [
+      "All Fields",
+      "Diversity Initiatives",
+      "First Generation Students"
+    ],
+    "requirements": {
+      "minimumEducationCreditScore": 620,
+      "preferredFields": ["Any"],
+      "preferredSkills": ["Leadership", "Community Involvement"]
+    },
+    "fundingModels": [
+      {
+        "type": "Low-Interest Loan",
+        "details": {
+          "interestRange": [1, 3],
+          "termRange": [36, 60]
+        }
+      },
+      {
+        "type": "Partial Scholarship",
+        "details": {
+          "percentageCovered": [25, 50],
+          "requirementsCriteria": ["Academic Performance", "Community Impact"]
+        }
+      }
+    ],
+    "portfolio": [
+      {
+        "studentId": "user-056",
+        "amount": 10000,
+        "date": "2024-08-15T00:00:00Z",
+        "status": "active",
+        "milestones": 2,
+        "milestonesCompleted": 1
+      },
+      {
+        "studentId": "user-078",
+        "amount": 15000,
+        "date": "2024-11-20T00:00:00Z",
+        "status": "active",
+        "milestones": 3,
+        "milestonesCompleted": 0
+      }
+    ]
+  },
+  {
+    "id": "investor-003",
+    "name": "Innovative Finance Group",
+    "type": "Private Investment Firm",
+    "logo": "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80",
+    "description": "Data-driven investment in high-potential students across business and finance",
+    "investmentRange": {
+      "min": 10000,
+      "max": 75000
+    },
+    "totalInvested": 3200000,
+    "activeInvestments": 35,
+    "successRate": 94,
+    "averageROI": 22.5,
+    "focusAreas": ["Business", "Finance", "Economics", "Fintech"],
+    "requirements": {
+      "minimumEducationCreditScore": 750,
+      "preferredFields": ["Business", "Finance", "Economics"],
+      "preferredSkills": [
+        "Financial Analysis",
+        "Data Analysis",
+        "Business Strategy"
+      ]
+    },
+    "fundingModels": [
+      {
+        "type": "Income Share Agreement",
+        "details": {
+          "percentageRange": [8, 17],
+          "termRange": [24, 60],
+          "capMultiplier": 1.8
+        }
+      },
+      {
+        "type": "Fixed Term Loan",
+        "details": {
+          "interestRange": [4, 7],
+          "termRange": [36, 60]
+        }
+      }
+    ],
+    "portfolio": [
+      {
+        "studentId": "user-002",
+        "amount": 20000,
+        "date": "2024-11-15T00:00:00Z",
+        "status": "active",
+        "milestones": 2,
+        "milestonesCompleted": 0
+      },
+      {
+        "studentId": "user-042",
+        "amount": 35000,
+        "date": "2024-10-01T00:00:00Z",
+        "status": "active",
+        "milestones": 4,
+        "milestonesCompleted": 1
+      }
+    ]
+  }
+]

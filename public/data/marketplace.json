@@ -1,0 +1,163 @@
+[
+  {
+    "id": "resource-001",
+    "type": "course",
+    "title": "Advanced Machine Learning",
+    "provider": "TechEd Academy",
+    "courseId": "course-001",
+    "image": "https://images.unsplash.com/photo-1526378787940-576a539ba69d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=200&q=80",
+    "description": "Deep dive into machine learning algorithms, neural networks, and practical applications.",
+    "price": 499,
+    "rating": 4.8,
+    "reviewCount": 245,
+    "featured": true,
+    "skills": ["Machine Learning", "Python", "Deep Learning"]
+  },
+  {
+    "id": "resource-002",
+    "type": "course",
+    "title": "Full Stack Web Development",
+    "provider": "CodeMasters",
+    "courseId": "course-002",
+    "image": "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=200&q=80",
+    "description": "Comprehensive course covering frontend and backend development with modern technologies.",
+    "price": 699,
+    "rating": 4.7,
+    "reviewCount": 312,
+    "featured": true,
+    "skills": ["JavaScript", "React", "Node.js", "MongoDB"]
+  },
+  {
+    "id": "resource-003",
+    "type": "mentorship",
+    "title": "Career Coaching for Tech Professionals",
+    "provider": "TechCareer Mentors",
+    "image": "https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=200&q=80",
+    "description": "One-on-one mentorship to help navigate tech career advancement and job searching.",
+    "mentor": {
+      "name": "Dr. James Wilson",
+      "title": "Senior Engineering Manager",
+      "company": "TechGiant Inc.",
+      "experience": 15,
+      "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+    },
+    "price": 150,
+    "priceType": "hourly",
+    "rating": 4.9,
+    "reviewCount": 87,
+    "featured": false,
+    "skills": ["Career Planning", "Interview Preparation", "Resume Building"]
+  },
+  {
+    "id": "resource-004",
+    "type": "peer-teaching",
+    "title": "React Hooks Deep Dive",
+    "provider": "Community Exchange",
+    "image": "https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=200&q=80",
+    "description": "Peer-led sessions exploring advanced React Hooks with practical examples.",
+    "teacher": {
+      "name": "Michelle Patel",
+      "rating": 4.8,
+      "completedSessions": 23,
+      "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+    },
+    "price": 25,
+    "priceType": "per session",
+    "sessionLength": "2 hours",
+    "maxParticipants": 5,
+    "rating": 4.7,
+    "reviewCount": 42,
+    "featured": false,
+    "skills": ["React", "JavaScript", "Frontend Development"]
+  },
+  {
+    "id": "resource-005",
+    "type": "course",
+    "title": "Blockchain Fundamentals",
+    "provider": "Crypto Academy",
+    "courseId": "course-005",
+    "image": "https://images.unsplash.com/photo-1639322537228-f710d846310a?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=200&q=80",
+    "description": "Introduction to blockchain technology, cryptocurrencies, and their applications.",
+    "price": 349,
+    "rating": 4.6,
+    "reviewCount": 184,
+    "featured": false,
+    "skills": ["Blockchain", "Cryptography", "Smart Contracts"]
+  },
+  {
+    "id": "resource-006",
+    "type": "course",
+    "title": "Python for Finance",
+    "provider": "FinTech Institute",
+    "courseId": "course-006",
+    "image": "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=200&q=80",
+    "description": "Learn how to apply Python programming to financial analysis and modeling.",
+    "price": 449,
+    "rating": 4.9,
+    "reviewCount": 206,
+    "featured": true,
+    "skills": ["Python", "Financial Analysis", "Data Visualization"]
+  },
+  {
+    "id": "resource-007",
+    "type": "mentorship",
+    "title": "Finance Career Guidance",
+    "provider": "FinCareer Experts",
+    "image": "https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=200&q=80",
+    "description": "Career mentorship for finance professionals looking to advance or transition to fintech.",
+    "mentor": {
+      "name": "Elizabeth Chen",
+      "title": "VP of Finance",
+      "company": "Global Finance Corp",
+      "experience": 12,
+      "avatar": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+    },
+    "price": 175,
+    "priceType": "hourly",
+    "rating": 4.8,
+    "reviewCount": 64,
+    "featured": false,
+    "skills": [
+      "Financial Career Planning",
+      "Fintech Transition",
+      "Leadership Development"
+    ]
+  },
+  {
+    "id": "resource-008",
+    "type": "peer-teaching",
+    "title": "Data Analysis with Python Study Group",
+    "provider": "Community Exchange",
+    "image": "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=200&q=80",
+    "description": "Weekly study group focusing on data analysis techniques using Python.",
+    "teacher": {
+      "name": "David Nguyen",
+      "rating": 4.9,
+      "completedSessions": 31,
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+    },
+    "price": 15,
+    "priceType": "per session",
+    "sessionLength": "1.5 hours",
+    "maxParticipants": 8,
+    "rating": 4.8,
+    "reviewCount": 56,
+    "featured": false,
+    "skills": ["Python", "Data Analysis", "Pandas", "NumPy"]
+  },
+  {
+    "id": "resource-009",
+    "type": "course",
+    "title": "Data Science Bootcamp",
+    "provider": "DataMasters Academy",
+    "courseId": "course-009",
+    "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=200&q=80",
+    "description": "Comprehensive bootcamp covering the full data science pipeline from data collection to deployment.",
+    "price": 1299,
+    "rating": 4.9,
+    "reviewCount": 473,
+    "featured": true,
+    "skills": ["Python", "Machine Learning", "Data Analysis", "Statistics"],
+    "premium": true
+  }
+]

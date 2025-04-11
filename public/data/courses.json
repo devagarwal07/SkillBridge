@@ -1,0 +1,432 @@
+[
+  {
+    "id": "course-001",
+    "title": "Advanced Machine Learning",
+    "provider": "TechEd Academy",
+    "image": "https://images.unsplash.com/photo-1526378787940-576a539ba69d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=200&q=80",
+    "description": "Deep dive into machine learning algorithms, neural networks, and practical applications.",
+    "level": "Advanced",
+    "duration": "12 weeks",
+    "format": "Online, Self-paced",
+    "price": 499,
+    "rating": 4.8,
+    "reviewCount": 245,
+    "skills": [
+      {
+        "id": "skill-003",
+        "name": "Machine Learning",
+        "level": 25
+      },
+      {
+        "id": "skill-002",
+        "name": "Python",
+        "level": 15
+      }
+    ],
+    "syllabus": [
+      {
+        "week": 1,
+        "title": "Advanced Regression Techniques",
+        "topics": [
+          "Polynomial Regression",
+          "Ridge and Lasso Regression",
+          "Elastic Net"
+        ]
+      },
+      {
+        "week": 2,
+        "title": "Decision Trees and Ensemble Methods",
+        "topics": [
+          "Advanced Decision Trees",
+          "Random Forests",
+          "Gradient Boosting"
+        ]
+      },
+      {
+        "week": 3,
+        "title": "Deep Neural Networks",
+        "topics": [
+          "Multilayer Perceptrons",
+          "Backpropagation",
+          "Regularization Techniques"
+        ]
+      }
+    ],
+    "prerequisites": [
+      "Basic Python",
+      "Fundamentals of Machine Learning",
+      "Statistics"
+    ],
+    "outcomes": [
+      "Build and deploy advanced machine learning models",
+      "Optimize model performance",
+      "Apply deep learning to real-world problems"
+    ],
+    "certifications": [
+      {
+        "name": "Advanced ML Practitioner",
+        "cost": "Included",
+        "validityPeriod": "Lifetime"
+      }
+    ],
+    "testimonials": [
+      {
+        "name": "David Kim",
+        "role": "Data Scientist",
+        "company": "Analytics Inc",
+        "text": "This course took my ML skills to the next level. Highly recommended!"
+      }
+    ],
+    "careerImpact": {
+      "averageSalaryIncrease": 18000,
+      "jobPlacementRate": 85,
+      "topEmployers": ["TechCorp", "DataInnovate", "AI Solutions"]
+    }
+  },
+  {
+    "id": "course-002",
+    "title": "Full Stack Web Development",
+    "provider": "CodeMasters",
+    "image": "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=200&q=80",
+    "description": "Comprehensive course covering frontend and backend development with modern technologies.",
+    "level": "Intermediate",
+    "duration": "16 weeks",
+    "format": "Online, Instructor-led",
+    "price": 699,
+    "rating": 4.7,
+    "reviewCount": 312,
+    "skills": [
+      {
+        "id": "skill-001",
+        "name": "JavaScript",
+        "level": 30
+      },
+      {
+        "id": "skill-004",
+        "name": "React",
+        "level": 25
+      },
+      {
+        "id": "skill-011",
+        "name": "Node.js",
+        "level": 25
+      }
+    ],
+    "syllabus": [
+      {
+        "week": 1,
+        "title": "HTML/CSS Fundamentals",
+        "topics": ["Modern HTML5", "CSS3 & Flexbox", "Responsive Design"]
+      },
+      {
+        "week": 2,
+        "title": "JavaScript Essentials",
+        "topics": [
+          "ES6+ Features",
+          "DOM Manipulation",
+          "Asynchronous JavaScript"
+        ]
+      },
+      {
+        "week": 3,
+        "title": "Frontend Frameworks",
+        "topics": [
+          "React Fundamentals",
+          "Component Architecture",
+          "State Management"
+        ]
+      }
+    ],
+    "prerequisites": ["Basic HTML/CSS", "Programming Fundamentals"],
+    "outcomes": [
+      "Build full-stack web applications",
+      "Implement responsive user interfaces",
+      "Create and consume RESTful APIs"
+    ],
+    "certifications": [
+      {
+        "name": "Full Stack Developer",
+        "cost": "Included",
+        "validityPeriod": "Lifetime"
+      }
+    ],
+    "testimonials": [
+      {
+        "name": "Sarah Johnson",
+        "role": "Frontend Developer",
+        "company": "WebSolutions",
+        "text": "This course helped me transition from design to development. Great hands-on projects!"
+      }
+    ],
+    "careerImpact": {
+      "averageSalaryIncrease": 15000,
+      "jobPlacementRate": 90,
+      "topEmployers": ["TechStartup", "WebAgency", "SoftwareCo"]
+    }
+  },
+  {
+    "id": "course-005",
+    "title": "Blockchain Fundamentals",
+    "provider": "Crypto Academy",
+    "image": "https://images.unsplash.com/photo-1639322537228-f710d846310a?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=200&q=80",
+    "description": "Introduction to blockchain technology, cryptocurrencies, and their applications.",
+    "level": "Beginner",
+    "duration": "8 weeks",
+    "format": "Online, Self-paced",
+    "price": 349,
+    "rating": 4.6,
+    "reviewCount": 184,
+    "skills": [
+      {
+        "id": "skill-008",
+        "name": "Blockchain",
+        "level": 35
+      },
+      {
+        "id": "skill-012",
+        "name": "Cryptography",
+        "level": 20
+      }
+    ],
+    "syllabus": [
+      {
+        "week": 1,
+        "title": "Introduction to Blockchain",
+        "topics": [
+          "Blockchain History",
+          "Decentralized Systems",
+          "Consensus Mechanisms"
+        ]
+      },
+      {
+        "week": 2,
+        "title": "Cryptocurrency Fundamentals",
+        "topics": ["Bitcoin", "Ethereum", "Altcoins"]
+      },
+      {
+        "week": 3,
+        "title": "Smart Contracts",
+        "topics": [
+          "Smart Contract Basics",
+          "Solidity Introduction",
+          "Use Cases"
+        ]
+      }
+    ],
+    "prerequisites": [
+      "Basic Programming Knowledge",
+      "Internet Technology Understanding"
+    ],
+    "outcomes": [
+      "Understand blockchain architecture",
+      "Analyze cryptocurrency markets",
+      "Create simple smart contracts"
+    ],
+    "certifications": [
+      {
+        "name": "Blockchain Foundation",
+        "cost": "Included",
+        "validityPeriod": "Lifetime"
+      }
+    ],
+    "testimonials": [
+      {
+        "name": "Mark Wilson",
+        "role": "Financial Analyst",
+        "company": "InvestGroup",
+        "text": "Perfect introduction to blockchain for finance professionals like me."
+      }
+    ],
+    "careerImpact": {
+      "averageSalaryIncrease": 22000,
+      "jobPlacementRate": 75,
+      "topEmployers": ["BlockchainVentures", "CryptoFinance", "TechInnovate"]
+    }
+  },
+  {
+    "id": "course-006",
+    "title": "Python for Finance",
+    "provider": "FinTech Institute",
+    "image": "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=200&q=80",
+    "description": "Learn how to apply Python programming to financial analysis and modeling.",
+    "level": "Intermediate",
+    "duration": "10 weeks",
+    "format": "Online, Instructor-led",
+    "price": 449,
+    "rating": 4.9,
+    "reviewCount": 206,
+    "skills": [
+      {
+        "id": "skill-002",
+        "name": "Python",
+        "level": 25
+      },
+      {
+        "id": "skill-006",
+        "name": "Financial Analysis",
+        "level": 30
+      },
+      {
+        "id": "skill-010",
+        "name": "Data Visualization",
+        "level": 20
+      }
+    ],
+    "syllabus": [
+      {
+        "week": 1,
+        "title": "Python for Financial Data",
+        "topics": ["Pandas Basics", "Financial Data Sources", "Data Cleaning"]
+      },
+      {
+        "week": 2,
+        "title": "Financial Analysis with Python",
+        "topics": ["Statistical Analysis", "Time Series", "Risk Metrics"]
+      },
+      {
+        "week": 3,
+        "title": "Portfolio Management",
+        "topics": [
+          "Asset Allocation",
+          "Risk-Return Analysis",
+          "Optimization Techniques"
+        ]
+      }
+    ],
+    "prerequisites": ["Basic Python", "Financial Concepts", "Statistics"],
+    "outcomes": [
+      "Build financial models using Python",
+      "Analyze market data efficiently",
+      "Create financial visualizations and reports"
+    ],
+    "certifications": [
+      {
+        "name": "Python Finance Specialist",
+        "cost": "Included",
+        "validityPeriod": "Lifetime"
+      }
+    ],
+    "testimonials": [
+      {
+        "name": "Emily Chang",
+        "role": "Investment Analyst",
+        "company": "Global Invest",
+        "text": "The perfect blend of programming and finance. I use these skills daily in my work."
+      }
+    ],
+    "careerImpact": {
+      "averageSalaryIncrease": 19000,
+      "jobPlacementRate": 88,
+      "topEmployers": [
+        "FinTech Solutions",
+        "Investment Bank Inc.",
+        "Hedge Fund Partners"
+      ]
+    }
+  },
+  {
+    "id": "course-009",
+    "title": "Data Science Bootcamp",
+    "provider": "DataMasters Academy",
+    "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&h=200&q=80",
+    "description": "Comprehensive bootcamp covering the full data science pipeline from data collection to deployment.",
+    "level": "Intermediate to Advanced",
+    "duration": "14 weeks",
+    "format": "Online, Instructor-led with Live Sessions",
+    "price": 1299,
+    "rating": 4.9,
+    "reviewCount": 473,
+    "skills": [
+      {
+        "id": "skill-002",
+        "name": "Python",
+        "level": 30
+      },
+      {
+        "id": "skill-003",
+        "name": "Machine Learning",
+        "level": 40
+      },
+      {
+        "id": "skill-013",
+        "name": "Data Analysis",
+        "level": 35
+      },
+      {
+        "id": "skill-010",
+        "name": "Data Visualization",
+        "level": 25
+      }
+    ],
+    "syllabus": [
+      {
+        "week": 1,
+        "title": "Data Science Fundamentals",
+        "topics": [
+          "Introduction to Data Science",
+          "Python for Data Analysis",
+          "Statistical Foundations"
+        ]
+      },
+      {
+        "week": 3,
+        "title": "Data Visualization and Exploration",
+        "topics": [
+          "Matplotlib & Seaborn",
+          "Interactive Visualizations",
+          "Exploratory Data Analysis"
+        ]
+      },
+      {
+        "week": 6,
+        "title": "Machine Learning",
+        "topics": [
+          "Supervised Learning",
+          "Unsupervised Learning",
+          "Model Evaluation"
+        ]
+      },
+      {
+        "week": 10,
+        "title": "Deep Learning",
+        "topics": [
+          "Neural Networks",
+          "Computer Vision",
+          "Natural Language Processing"
+        ]
+      }
+    ],
+    "prerequisites": [
+      "Basic Python",
+      "Statistics Fundamentals",
+      "Linear Algebra"
+    ],
+    "outcomes": [
+      "Build end-to-end data science projects",
+      "Implement and deploy machine learning models",
+      "Extract insights from complex datasets",
+      "Communicate data findings effectively"
+    ],
+    "certifications": [
+      {
+        "name": "Certified Data Scientist",
+        "cost": "Included",
+        "validityPeriod": "Lifetime"
+      }
+    ],
+    "testimonials": [
+      {
+        "name": "Thomas Rivera",
+        "role": "Senior Data Scientist",
+        "company": "Tech Innovations Inc.",
+        "text": "This bootcamp completely transformed my career. The project-based approach gave me a portfolio that impressed employers."
+      }
+    ],
+    "careerImpact": {
+      "averageSalaryIncrease": 32000,
+      "jobPlacementRate": 92,
+      "topEmployers": ["AI Research Lab", "TechGiant", "DataDriven Solutions"]
+    },
+    "premium": true
+  }
+]

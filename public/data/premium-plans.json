@@ -1,0 +1,70 @@
+[
+  {
+    "id": "premium-basic",
+    "name": "Premium Essentials",
+    "description": "Enhanced learning experience with basic premium features",
+    "price": 9.99,
+    "billingCycle": "monthly",
+    "features": [
+      "Ad-free experience",
+      "Unlimited skill assessments",
+      "Priority customer support",
+      "Download course materials for offline access",
+      "Early access to new features"
+    ],
+    "popular": false,
+    "color": "bg-blue-500"
+  },
+  {
+    "id": "premium-pro",
+    "name": "Premium Professional",
+    "description": "Advanced features for serious career advancement",
+    "price": 19.99,
+    "billingCycle": "monthly",
+    "features": [
+      "All Essentials features",
+      "AI-powered career path recommendations",
+      "Unlimited interview practice with feedback",
+      "Access to premium courses and resources",
+      "Monthly 1-on-1 session with a career advisor",
+      "Direct messaging with potential investors"
+    ],
+    "popular": true,
+    "color": "bg-purple-600"
+  },
+  {
+    "id": "premium-elite",
+    "name": "Premium Elite",
+    "description": "Our most comprehensive package for maximum career growth",
+    "price": 39.99,
+    "billingCycle": "monthly",
+    "features": [
+      "All Professional features",
+      "Priority matching with top investors",
+      "Weekly 1-on-1 sessions with industry mentors",
+      "Exclusive industry networking events",
+      "Custom learning path designed by experts",
+      "Advanced analytics and reporting",
+      "Guaranteed interview opportunities with partner companies"
+    ],
+    "popular": false,
+    "color": "bg-amber-500"
+  },
+  {
+    "id": "premium-annual",
+    "name": "Annual Pro",
+    "description": "All Professional features with annual savings",
+    "price": 199.99,
+    "billingCycle": "annual",
+    "features": [
+      "All Professional features",
+      "Two months free compared to monthly billing",
+      "Annual career strategy session",
+      "Resume and portfolio review",
+      "Additional 10% discount on all marketplace purchases"
+    ],
+    "popular": false,
+    "color": "bg-emerald-600",
+    "discountPercentage": 17
+  }
+]

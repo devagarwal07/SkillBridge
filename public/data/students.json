@@ -1,0 +1,271 @@
+[
+  {
+    "id": "user-001",
+    "name": "Alex Johnson",
+    "email": "alex@example.com",
+    "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    "location": "San Francisco, CA",
+    "bio": "Computer Science student passionate about AI and machine learning",
+    "joinedAt": "2024-10-15T12:00:00Z",
+    "educationCreditScore": 720,
+    "premium": false,
+    "skills": [
+      {
+        "id": "skill-001",
+        "name": "JavaScript",
+        "level": 85,
+        "lastVerified": "2024-12-10T09:30:00Z",
+        "endorsements": 12
+      },
+      {
+        "id": "skill-002",
+        "name": "Python",
+        "level": 78,
+        "lastVerified": "2024-11-15T14:20:00Z",
+        "endorsements": 9
+      },
+      {
+        "id": "skill-003",
+        "name": "Machine Learning",
+        "level": 62,
+        "lastVerified": "2024-10-05T11:45:00Z",
+        "endorsements": 5
+      },
+      {
+        "id": "skill-004",
+        "name": "React",
+        "level": 70,
+        "lastVerified": "2024-12-18T16:15:00Z",
+        "endorsements": 7
+      },
+      {
+        "id": "skill-005",
+        "name": "SQL",
+        "level": 65,
+        "lastVerified": "2024-11-28T10:10:00Z",
+        "endorsements": 6
+      }
+    ],
+    "learning": {
+      "currentCourses": [
+        {
+          "id": "course-001",
+          "title": "Advanced Machine Learning",
+          "progress": 45,
+          "dueDate": "2025-04-15T23:59:59Z"
+        },
+        {
+          "id": "course-002",
+          "title": "Full Stack Web Development",
+          "progress": 78,
+          "dueDate": "2025-03-30T23:59:59Z"
+        }
+      ],
+      "completedCourses": [
+        {
+          "id": "course-003",
+          "title": "Introduction to Python",
+          "completedDate": "2024-09-10T14:25:00Z",
+          "grade": "A"
+        },
+        {
+          "id": "course-004",
+          "title": "Data Structures & Algorithms",
+          "completedDate": "2024-08-05T11:30:00Z",
+          "grade": "B+"
+        }
+      ],
+      "streak": 24,
+      "totalHours": 342
+    },
+    "funding": {
+      "received": 15000,
+      "pendingApplications": [
+        {
+          "id": "fund-001",
+          "investorId": "investor-002",
+          "amount": 5000,
+          "status": "under review",
+          "appliedAt": "2025-02-18T09:15:00Z"
+        }
+      ],
+      "activeContracts": [
+        {
+          "id": "contract-001",
+          "investorId": "investor-001",
+          "amount": 15000,
+          "termsType": "income-share",
+          "termDetails": {
+            "percentage": 8,
+            "months": 24,
+            "capAmount": 20000
+          },
+          "startDate": "2024-10-20T00:00:00Z",
+          "milestones": [
+            {
+              "description": "Complete Machine Learning Certification",
+              "dueDate": "2025-04-30T23:59:59Z",
+              "completed": false,
+              "amount": 5000
+            },
+            {
+              "description": "Secure Internship in Data Science",
+              "dueDate": "2025-07-31T23:59:59Z",
+              "completed": false,
+              "amount": 10000
+            }
+          ]
+        }
+      ]
+    },
+    "career": {
+      "objectives": [
+        "Become a Machine Learning Engineer",
+        "Work in a tech company focusing on AI applications"
+      ],
+      "desiredSalary": 95000,
+      "preferredLocations": ["San Francisco", "Seattle", "Remote"],
+      "interviews": [
+        {
+          "id": "interview-001",
+          "companyName": "TechCorp Inc.",
+          "position": "Junior ML Engineer",
+          "date": "2025-04-10T13:00:00Z",
+          "status": "scheduled",
+          "preparationScore": 72
+        }
+      ]
+    }
+  },
+  {
+    "id": "user-002",
+    "name": "Samantha Lee",
+    "email": "samantha@example.com",
+    "avatar": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    "location": "Boston, MA",
+    "bio": "Finance major with interest in fintech and blockchain technologies",
+    "joinedAt": "2024-11-02T15:30:00Z",
+    "educationCreditScore": 780,
+    "premium": true,
+    "skills": [
+      {
+        "id": "skill-006",
+        "name": "Financial Analysis",
+        "level": 88,
+        "lastVerified": "2025-01-15T11:20:00Z",
+        "endorsements": 14
+      },
+      {
+        "id": "skill-007",
+        "name": "Excel",
+        "level": 92,
+        "lastVerified": "2025-01-05T10:45:00Z",
+        "endorsements": 17
+      },
+      {
+        "id": "skill-008",
+        "name": "Blockchain",
+        "level": 65,
+        "lastVerified": "2024-12-12T14:30:00Z",
+        "endorsements": 6
+      },
+      {
+        "id": "skill-009",
+        "name": "Python",
+        "level": 60,
+        "lastVerified": "2024-11-25T13:15:00Z",
+        "endorsements": 5
+      },
+      {
+        "id": "skill-010",
+        "name": "Data Visualization",
+        "level": 75,
+        "lastVerified": "2025-01-20T16:05:00Z",
+        "endorsements": 9
+      }
+    ],
+    "learning": {
+      "currentCourses": [
+        {
+          "id": "course-005",
+          "title": "Blockchain Fundamentals",
+          "progress": 65,
+          "dueDate": "2025-04-20T23:59:59Z"
+        },
+        {
+          "id": "course-006",
+          "title": "Python for Finance",
+          "progress": 40,
+          "dueDate": "2025-05-15T23:59:59Z"
+        }
+      ],
+      "completedCourses": [
+        {
+          "id": "course-007",
+          "title": "Financial Modeling",
+          "completedDate": "2024-10-25T15:40:00Z",
+          "grade": "A"
+        },
+        {
+          "id": "course-008",
+          "title": "Advanced Excel for Analysis",
+          "completedDate": "2024-09-15T12:20:00Z",
+          "grade": "A-"
+        }
+      ],
+      "streak": 37,
+      "totalHours": 410
+    },
+    "funding": {
+      "received": 20000,
+      "pendingApplications": [],
+      "activeContracts": [
+        {
+          "id": "contract-002",
+          "investorId": "investor-003",
+          "amount": 20000,
+          "termsType": "fixed-term",
+          "termDetails": {
+            "interestRate": 5.5,
+            "months": 36,
+            "monthlyPayment": 650
+          },
+          "startDate": "2024-11-15T00:00:00Z",
+          "milestones": [
+            {
+              "description": "Complete Blockchain Certification",
+              "dueDate": "2025-06-30T23:59:59Z",
+              "completed": false,
+              "amount": 8000
+            },
+            {
+              "description": "Secure Finance Internship",
+              "dueDate": "2025-08-15T23:59:59Z",
+              "completed": false,
+              "amount": 12000
+            }
+          ]
+        }
+      ]
+    },
+    "career": {
+      "objectives": [
+        "Work in Fintech",
+        "Become a Financial Analyst with focus on emerging technologies"
+      ],
+      "desiredSalary": 85000,
+      "preferredLocations": ["Boston", "New York", "Chicago"],
+      "interviews": [
+        {
+          "id": "interview-002",
+          "companyName": "Fintech Innovations",
+          "position": "Financial Analyst Intern",
+          "date": "2025-03-28T10:30:00Z",
+          "status": "completed",
+          "preparationScore": 85,
+          "feedback": "Strong understanding of financial concepts. Need to improve technical knowledge."
+        }
+      ]
+    }
+  }
+]

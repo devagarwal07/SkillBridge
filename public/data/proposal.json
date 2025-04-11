@@ -1,0 +1,52 @@
+[
+  {
+    "id": "student-001",
+    "name": "Priya Sharma",
+    "avatar": "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=100&h=100&fit=crop",
+    "university": "IIT Delhi",
+    "course": "B.Tech in Computer Science",
+    "year": "2nd Year",
+    "amountRequested": 50000,
+    "amountRaised": 12000,
+    "goalPurpose": "To cover semester tuition and buy a new laptop for coding assignments.",
+    "skills": ["Python", "Machine Learning", "Data Structures"],
+    "location": "New Delhi, India",
+    "rating": 4.8,
+    "supporters": 22,
+    "verified": true,
+    "featured": true
+  },
+  {
+    "id": "student-002",
+    "name": "Aditya Verma",
+    "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop",
+    "university": "NIT Trichy",
+    "course": "B.Tech in Mechanical Engineering",
+    "year": "3rd Year",
+    "amountRequested": 30000,
+    "amountRaised": 8000,
+    "goalPurpose": "Support for final-year project on renewable energy systems.",
+    "skills": ["CAD", "SolidWorks", "Project Management"],
+    "location": "Trichy, India",
+    "rating": 4.6,
+    "supporters": 15,
+    "verified": true,
+    "featured": true
+  },
+  {
+    "id": "student-003",
+    "name": "Meera Joshi",
+    "avatar": "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=100&h=100&fit=crop",
+    "university": "BITS Pilani",
+    "course": "B.E. in Electronics and Instrumentation",
+    "year": "1st Year",
+    "amountRequested": 40000,
+    "amountRaised": 10000,
+    "goalPurpose": "Need funds for hostel fees and study materials.",
+    "skills": ["Embedded Systems", "C Programming", "Arduino"],
+    "location": "Pilani, India",
+    "rating": 4.9,
+    "supporters": 28,
+    "verified": false
+  }
+]

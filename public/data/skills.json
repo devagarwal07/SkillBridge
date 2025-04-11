@@ -1,0 +1,306 @@
+[
+  {
+    "id": "skill-001",
+    "name": "JavaScript",
+    "category": "Programming",
+    "description": "High-level, often just-in-time compiled language that conforms to the ECMAScript specification",
+    "demandScore": 92,
+    "growthRate": 5,
+    "averageSalaryImpact": 15000,
+    "relatedSkills": ["TypeScript", "React", "Node.js", "Vue.js"],
+    "learningResources": [
+      {
+        "title": "Modern JavaScript From The Beginning",
+        "type": "Course",
+        "provider": "Udemy",
+        "url": "https://example.com/js-course",
+        "duration": "20 hours",
+        "cost": "$19.99"
+      },
+      {
+        "title": "JavaScript: The Good Parts",
+        "type": "Book",
+        "provider": "O'Reilly",
+        "url": "https://example.com/js-book",
+        "duration": "Self-paced",
+        "cost": "$29.99"
+      }
+    ],
+    "certifications": [
+      {
+        "name": "JavaScript Developer Certification",
+        "provider": "W3Schools",
+        "cost": "$95",
+        "duration": "Self-paced",
+        "level": "Intermediate"
+      }
+    ],
+    "industryDemand": [
+      {
+        "industry": "Web Development",
+        "demandLevel": 95
+      },
+      {
+        "industry": "Software Development",
+        "demandLevel": 90
+      },
+      {
+        "industry": "E-commerce",
+        "demandLevel": 85
+      }
+    ]
+  },
+  {
+    "id": "skill-002",
+    "name": "Python",
+    "category": "Programming",
+    "description": "An interpreted, high-level, general-purpose programming language",
+    "demandScore": 96,
+    "growthRate": 8,
+    "averageSalaryImpact": 18000,
+    "relatedSkills": ["Data Science", "Machine Learning", "Django", "Flask"],
+    "learningResources": [
+      {
+        "title": "Complete Python Bootcamp",
+        "type": "Course",
+        "provider": "Udemy",
+        "url": "https://example.com/python-course",
+        "duration": "24 hours",
+        "cost": "$19.99"
+      },
+      {
+        "title": "Python Crash Course",
+        "type": "Book",
+        "provider": "No Starch Press",
+        "url": "https://example.com/python-book",
+        "duration": "Self-paced",
+        "cost": "$39.99"
+      }
+    ],
+    "certifications": [
+      {
+        "name": "Python Institute PCEP",
+        "provider": "Python Institute",
+        "cost": "$59",
+        "duration": "Self-paced",
+        "level": "Entry"
+      },
+      {
+        "name": "Python Institute PCAP",
+        "provider": "Python Institute",
+        "cost": "$195",
+        "duration": "Self-paced",
+        "level": "Associate"
+      }
+    ],
+    "industryDemand": [
+      {
+        "industry": "Data Science",
+        "demandLevel": 98
+      },
+      {
+        "industry": "Machine Learning",
+        "demandLevel": 97
+      },
+      {
+        "industry": "Web Development",
+        "demandLevel": 85
+      },
+      {
+        "industry": "Finance",
+        "demandLevel": 80
+      }
+    ]
+  },
+  {
+    "id": "skill-003",
+    "name": "Machine Learning",
+    "category": "Data Science",
+    "description": "Field of study that gives computers the ability to learn without being explicitly programmed",
+    "demandScore": 94,
+    "growthRate": 12,
+    "averageSalaryImpact": 25000,
+    "relatedSkills": ["Python", "TensorFlow", "PyTorch", "Statistics"],
+    "learningResources": [
+      {
+        "title": "Machine Learning A-Z",
+        "type": "Course",
+        "provider": "Udemy",
+        "url": "https://example.com/ml-course",
+        "duration": "40 hours",
+        "cost": "$19.99"
+      },
+      {
+        "title": "Hands-On Machine Learning with Scikit-Learn & TensorFlow",
+        "type": "Book",
+        "provider": "O'Reilly",
+        "url": "https://example.com/ml-book",
+        "duration": "Self-paced",
+        "cost": "$49.99"
+      }
+    ],
+    "certifications": [
+      {
+        "name": "TensorFlow Developer Certificate",
+        "provider": "Google",
+        "cost": "$100",
+        "duration": "Self-paced",
+        "level": "Intermediate"
+      },
+      {
+        "name": "Microsoft Certified: Azure AI Engineer Associate",
+        "provider": "Microsoft",
+        "cost": "$165",
+        "duration": "Self-paced",
+        "level": "Associate"
+      }
+    ],
+    "industryDemand": [
+      {
+        "industry": "Artificial Intelligence",
+        "demandLevel": 98
+      },
+      {
+        "industry": "Healthcare",
+        "demandLevel": 90
+      },
+      {
+        "industry": "Finance",
+        "demandLevel": 88
+      },
+      {
+        "industry": "E-commerce",
+        "demandLevel": 85
+      }
+    ]
+  },
+  {
+    "id": "skill-006",
+    "name": "Financial Analysis",
+    "category": "Finance",
+    "description": "Process of evaluating businesses, projects, budgets and other finance-related entities",
+    "demandScore": 88,
+    "growthRate": 6,
+    "averageSalaryImpact": 17000,
+    "relatedSkills": [
+      "Excel",
+      "Data Visualization",
+      "Statistics",
+      "Accounting"
+    ],
+    "learningResources": [
+      {
+        "title": "Financial Analysis: Complete Course",
+        "type": "Course",
+        "provider": "Udemy",
+        "url": "https://example.com/finance-course",
+        "duration": "30 hours",
+        "cost": "$19.99"
+      },
+      {
+        "title": "Financial Statement Analysis",
+        "type": "Book",
+        "provider": "Wiley",
+        "url": "https://example.com/finance-book",
+        "duration": "Self-paced",
+        "cost": "$45.99"
+      }
+    ],
+    "certifications": [
+      {
+        "name": "Chartered Financial Analyst (CFA)",
+        "provider": "CFA Institute",
+        "cost": "$1,000",
+        "duration": "Self-paced",
+        "level": "Professional"
+      },
+      {
+        "name": "Financial Modeling & Valuation Analyst (FMVA)",
+        "provider": "Corporate Finance Institute",
+        "cost": "$497",
+        "duration": "Self-paced",
+        "level": "Professional"
+      }
+    ],
+    "industryDemand": [
+      {
+        "industry": "Banking",
+        "demandLevel": 95
+      },
+      {
+        "industry": "Investment",
+        "demandLevel": 93
+      },
+      {
+        "industry": "Corporate Finance",
+        "demandLevel": 90
+      },
+      {
+        "industry": "Consulting",
+        "demandLevel": 85
+      }
+    ]
+  },
+  {
+    "id": "skill-008",
+    "name": "Blockchain",
+    "category": "Technology",
+    "description": "A distributed ledger technology that maintains a continuously growing list of records",
+    "demandScore": 82,
+    "growthRate": 15,
+    "averageSalaryImpact": 22000,
+    "relatedSkills": ["Cryptography", "Smart Contracts", "Solidity", "Web3"],
+    "learningResources": [
+      {
+        "title": "Blockchain A-Z",
+        "type": "Course",
+        "provider": "Udemy",
+        "url": "https://example.com/blockchain-course",
+        "duration": "25 hours",
+        "cost": "$19.99"
+      },
+      {
+        "title": "Mastering Blockchain",
+        "type": "Book",
+        "provider": "Packt",
+        "url": "https://example.com/blockchain-book",
+        "duration": "Self-paced",
+        "cost": "$39.99"
+      }
+    ],
+    "certifications": [
+      {
+        "name": "Certified Blockchain Professional",
+        "provider": "Blockchain Council",
+        "cost": "$299",
+        "duration": "Self-paced",
+        "level": "Professional"
+      },
+      {
+        "name": "Certified Ethereum Developer",
+        "provider": "Blockchain Training Alliance",
+        "cost": "$350",
+        "duration": "Self-paced",
+        "level": "Professional"
+      }
+    ],
+    "industryDemand": [
+      {
+        "industry": "Finance",
+        "demandLevel": 88
+      },
+      {
+        "industry": "Cryptocurrency",
+        "demandLevel": 95
+      },
+      {
+        "industry": "Supply Chain",
+        "demandLevel": 80
+      },
+      {
+        "industry": "Healthcare",
+        "demandLevel": 70
+      }
+    ]
+  }
+]

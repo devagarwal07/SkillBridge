@@ -1,0 +1,222 @@
+[
+  {
+    "id": "employer-001",
+    "name": "TechInnovate",
+    "industry": "Software Development",
+    "logo": "https://images.unsplash.com/photo-1496200186974-4293800e2c20?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80",
+    "description": "Leading AI and machine learning solutions provider",
+    "location": "San Francisco, CA",
+    "employeeCount": 500,
+    "founded": 2010,
+    "website": "https://techinnovate.example.com",
+    "openPositions": [
+      {
+        "id": "job-001",
+        "title": "Junior Machine Learning Engineer",
+        "department": "AI Research",
+        "description": "Develop and implement machine learning models for our core products",
+        "requirements": [
+          "BS/MS in Computer Science or related field",
+          "Experience with Python and machine learning frameworks",
+          "Understanding of statistical modeling"
+        ],
+        "skills": [
+          {
+            "name": "Python",
+            "level": 70
+          },
+          {
+            "name": "Machine Learning",
+            "level": 65
+          },
+          {
+            "name": "TensorFlow",
+            "level": 60
+          }
+        ],
+        "salary": {
+          "min": 85000,
+          "max": 110000
+        },
+        "location": "San Francisco, CA",
+        "remote": "Hybrid",
+        "postedDate": "2025-02-15T10:30:00Z",
+        "applicants": 47
+      },
+      {
+        "id": "job-002",
+        "title": "Full Stack Developer",
+        "department": "Product Engineering",
+        "description": "Build and maintain our web applications and services",
+        "requirements": [
+          "3+ years experience in web development",
+          "Proficiency in React, Node.js",
+          "Experience with cloud services"
+        ],
+        "skills": [
+          {
+            "name": "JavaScript",
+            "level": 80
+          },
+          {
+            "name": "React",
+            "level": 75
+          },
+          {
+            "name": "Node.js",
+            "level": 70
+          }
+        ],
+        "salary": {
+          "min": 95000,
+          "max": 120000
+        },
+        "location": "San Francisco, CA",
+        "remote": "Yes",
+        "postedDate": "2025-03-01T09:15:00Z",
+        "applicants": 35
+      }
+    ],
+    "sponsoredPrograms": [
+      {
+        "id": "program-001",
+        "title": "ML Engineering Bootcamp",
+        "description": "Intensive 12-week program focused on practical machine learning skills",
+        "startDate": "2025-06-01T00:00:00Z",
+        "duration": "12 weeks",
+        "slots": 15,
+        "applicationDeadline": "2025-05-01T23:59:59Z",
+        "benefits": [
+          "Mentorship from senior engineers",
+          "Project-based learning",
+          "Guaranteed interview for qualified graduates"
+        ],
+        "requirements": {
+          "skills": ["Programming", "Basic Statistics"],
+          "education": "Computer Science or related field",
+          "experience": "Some programming experience required"
+        },
+        "currentApplications": 8
+      }
+    ],
+    "successStories": [
+      {
+        "studentId": "user-043",
+        "name": "Michael Chen",
+        "position": "Data Scientist",
+        "hireDate": "2024-09-15T00:00:00Z",
+        "testimonial": "The sponsored program gave me real-world ML experience that directly led to my current role."
+      }
+    ]
+  },
+  {
+    "id": "employer-002",
+    "name": "FinTech Solutions",
+    "industry": "Financial Technology",
+    "logo": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80",
+    "description": "Revolutionizing financial services through technology",
+    "location": "New York, NY",
+    "employeeCount": 350,
+    "founded": 2015,
+    "website": "https://fintechsolutions.example.com",
+    "openPositions": [
+      {
+        "id": "job-003",
+        "title": "Financial Analyst",
+        "department": "Analytics",
+        "description": "Analyze financial data and create reports for business decisions",
+        "requirements": [
+          "Bachelor's degree in Finance or related field",
+          "Strong Excel and data analysis skills",
+          "Understanding of financial markets"
+        ],
+        "skills": [
+          {
+            "name": "Financial Analysis",
+            "level": 75
+          },
+          {
+            "name": "Excel",
+            "level": 80
+          },
+          {
+            "name": "Data Visualization",
+            "level": 65
+          }
+        ],
+        "salary": {
+          "min": 70000,
+          "max": 90000
+        },
+        "location": "New York, NY",
+        "remote": "No",
+        "postedDate": "2025-02-10T14:45:00Z",
+        "applicants": 52
+      },
+      {
+        "id": "job-004",
+        "title": "Blockchain Developer",
+        "department": "Emerging Technologies",
+        "description": "Design and implement blockchain solutions for our financial products",
+        "requirements": [
+          "Experience with blockchain technologies",
+          "Strong programming skills",
+          "Understanding of cryptography"
+        ],
+        "skills": [
+          {
+            "name": "Blockchain",
+            "level": 70
+          },
+          {
+            "name": "Smart Contracts",
+            "level": 65
+          },
+          {
+            "name": "JavaScript",
+            "level": 75
+          }
+        ],
+        "salary": {
+          "min": 100000,
+          "max": 130000
+        },
+        "location": "New York, NY",
+        "remote": "Hybrid",
+        "postedDate": "2025-03-05T11:30:00Z",
+        "applicants": 28
+      }
+    ],
+    "sponsoredPrograms": [
+      {
+        "id": "program-002",
+        "title": "Fintech Innovation Program",
+        "description": "Six-month program combining finance knowledge with technology skills",
+        "startDate": "2025-07-01T00:00:00Z",
+        "duration": "6 months",
+        "slots": 10,
+        "applicationDeadline": "2025-05-15T23:59:59Z",
+        "benefits": [
+          "Stipend for duration of program",
+          "Real project experience",
+          "Networking with industry leaders"
+        ],
+        "requirements": {
+          "skills": ["Finance Knowledge", "Basic Programming"],
+          "education": "Finance, Economics, or Computer Science",
+          "experience": "Internship or coursework in finance"
+        },
+        "currentApplications": 12
+      }
+    ],
+    "successStories": [
+      {
+        "studentId": "user-027",
+        "name": "Jasmine Rodriguez",
+        "position": "Product Analyst",
+        "hireDate": "2024-08-01T00:00:00Z",
+        "testimonial": "The program bridged my finance knowledge with the tech skills I needed to break into fintech."
+      }
+    ]
+  }
+]
