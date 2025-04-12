@@ -20,8 +20,11 @@ import {
   Sparkles,
   BadgeCheck,
   ChevronDown,
+  Wallet,
+  Shield,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/utils";
 import SparkleButton from "@/components/ui/SparkleButton";
 import BackgroundGradient from "@/app/components/ui/Aurora";
@@ -31,6 +34,7 @@ import MarketplaceItem from "./components/MarketplaceItem";
 import SearchBar from "./components/SearchBar";
 import EmptyState from "./components/EmptyState";
 import Layout from "../components/layout/Layout";
+import ProposalBlockchainStatus from "../components/blockchain/ProposalBlockchainStatus";
 
 // Mock data fetch
 const fetchMarketplaceItems = async () => {
@@ -354,6 +358,46 @@ export default function Marketplace() {
               </div>
             </div>
 
+            {/* Blockchain integration notice */}
+            <div className="mt-6 bg-blue-900/10 border border-blue-800/30 rounded-lg p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="p-2 rounded-full bg-blue-900/30">
+                  <Wallet className="h-5 w-5 text-blue-400" />
+                </div>
+                <h3 className="font-medium text-lg text-blue-300">
+                  Blockchain Integration
+                </h3>
+              </div>
+              <p className="text-slate-300 mb-3">
+                Student funding proposals are now integrated with our blockchain
+                ecosystem. Invest directly with cryptocurrency and verify
+                identities using zero-knowledge proofs.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Button
+                  size="sm"
+                  className="bg-blue-600 hover:bg-blue-700"
+                  asChild
+                >
+                  <Link href="/blockchain">
+                    <Wallet className="h-4 w-4 mr-2" />
+                    Go to Blockchain
+                  </Link>
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="bg-slate-800/50 border-slate-700 text-slate-300"
+                  asChild
+                >
+                  <Link href="/blockchain?tab=zkp">
+                    <Shield className="h-4 w-4 mr-2" />
+                    Verify Identity
+                  </Link>
+                </Button>
+              </div>
+            </div>
+
             {/* Filter status and clear button */}
             {(searchQuery || selectedType || skillFilter) && (
               <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-between">
@@ -430,11 +474,16 @@ export default function Marketplace() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredItems.map((item, index) => (
-                  <MarketplaceItem
-                    key={item.id}
-                    item={item}
-                    delay={index * 0.05}
-                  />
+                  <div key={item.id} className="space-y-3">
+                    <MarketplaceItem item={item} delay={index * 0.05} />
+                    {/* Add blockchain status for student items */}
+                    {item.id?.startsWith("student-") && (
+                      <ProposalBlockchainStatus
+                        studentId={item.id}
+                        alreadyConnected={true}
+                      />
+                    )}
+                  </div>
                 ))}
               </div>
             )}

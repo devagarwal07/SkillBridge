@@ -5,6 +5,52 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// Blockchain utility functions
+export function formatAddress(address: string) {
+  if (!address) return "";
+  return `${address.substring(0, 6)}...${address.substring(
+    address.length - 4
+  )}`;
+}
+
+export function formatTimestamp(timestamp: number) {
+  const date = new Date(timestamp);
+  return date.toLocaleString();
+}
+
+// ETH to USD conversion helper
+export async function getEthPrice() {
+  try {
+    const response = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
+    );
+    const data = await response.json();
+    return data.ethereum.usd;
+  } catch (error) {
+    console.error("Error fetching ETH price:", error);
+    // Fallback to a default value if API fails
+    return 3150.42;
+  }
+}
+
+// Convert ETH to Wei
+export function ethToWei(ethAmount: string) {
+  if (!ethAmount || isNaN(parseFloat(ethAmount))) return "0x0";
+  return `0x${(parseFloat(ethAmount) * 1e18).toString(16)}`;
+}
+
+// Generate a random transaction hash (for mock purposes)
+export function generateTxHash() {
+  let txHash = "0x";
+  const characters = "0123456789abcdef";
+
+  for (let i = 0; i < 64; i++) {
+    txHash += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  return txHash;
+}
+
 export function formatCurrency(amount: number, currency = "USD"): string {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -94,4 +140,42 @@ export function getTimeAgo(date: string | Date): string {
 
   const years = Math.floor(months / 12);
   return `${years} years ago`;
+}
+
+// Create image hash for ZKP verification
+export async function createImageHash(imageData: string): Promise<string> {
+  try {
+    // Convert the base64 image to array buffer for hashing
+    const base64Data = imageData.split(",")[1];
+    const binaryString = atob(base64Data);
+    const bytes = new Uint8Array(binaryString.length);
+
+    for (let i = 0; i < binaryString.length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    // Use SubtleCrypto for hashing (browser Web Crypto API)
+    const hashBuffer = await crypto.subtle.digest("SHA-256", bytes.buffer);
+
+    // Convert to hex string
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+
+    return hashHex;
+  } catch (error) {
+    console.error("Error creating image hash:", error);
+
+    // Fallback to a simpler hash if SubtleCrypto fails
+    let hash = 0;
+    const str = imageData.substring(0, 10000); // Use first 10000 chars to avoid perf issues
+
+    for (let i = 0; i < str.length; i++) {
+      hash = (hash << 5) - hash + str.charCodeAt(i);
+      hash |= 0; // Convert to 32bit integer
+    }
+
+    return Math.abs(hash).toString(16).padStart(64, "0");
+  }
 }

@@ -18,6 +18,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
+import { DESTINATION_ADDRESS } from "../page";
 
 // Use the updated time information
 const CURRENT_TIME = "2025-04-05 22:38:16";
@@ -45,7 +46,11 @@ declare global {
   }
 }
 
-export default function BlockchainTransactions() {
+export default function BlockchainTransactions({
+  destinationAddress = DESTINATION_ADDRESS,
+}: {
+  destinationAddress?: string;
+}) {
   const [account, setAccount] = useState<string | null>(null);
   const [balance, setBalance] = useState<string>("0");
   const [network, setNetwork] = useState<string | null>(null);
@@ -53,7 +58,6 @@ export default function BlockchainTransactions() {
   const [isConnecting, setIsConnecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSending, setIsSending] = useState(false);
-  const [recipientAddress, setRecipientAddress] = useState("");
   const [amount, setAmount] = useState("");
   const [txHash, setTxHash] = useState<string | null>(null);
   const [txSuccess, setTxSuccess] = useState<boolean | null>(null);
@@ -240,7 +244,7 @@ export default function BlockchainTransactions() {
         type: "sent",
         amount: "0.05",
         from: address,
-        to: "0x7179A57704C91C94016B8f6EDdDa9c57F29A9C38",
+        to: destinationAddress,
         timestamp: Date.now() - 172800000, // 2 days ago
         status: "confirmed",
       },
@@ -262,8 +266,8 @@ export default function BlockchainTransactions() {
   const sendTransaction = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!recipientAddress || !amount) {
-      setError("Please enter recipient address and amount");
+    if (!amount) {
+      setError("Please enter amount");
       return;
     }
 
@@ -274,21 +278,32 @@ export default function BlockchainTransactions() {
 
     try {
       if (window.ethereum) {
+        if (!account) {
+          throw new Error("No account connected");
+        }
+
+        // Always use the hardcoded destination address
+        const recipientAddress = destinationAddress;
+
+        // Prepare transaction parameters
+        const transactionParameters = {
+          to: recipientAddress,
+          from: account,
+          value: ethers.utils.parseEther(amount)._hex,
+          gas: "0x5208", // 21000 gas
+        };
+
         // Use ethers v5 syntax
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
 
-        // Convert amount to wei using ethers v5 syntax
-        const amountWei = ethers.utils.parseEther(amount);
-
-        // Create transaction
-        const tx = {
-          to: recipientAddress,
-          value: amountWei,
-        };
-
         // Send transaction
-        const transaction = await signer.sendTransaction(tx);
+        const transaction = await signer.sendTransaction({
+          to: recipientAddress,
+          value: ethers.utils.parseEther(amount),
+          gasLimit: 21000,
+        });
+
         setTxHash(transaction.hash);
 
         // Wait for transaction to be mined
@@ -315,7 +330,6 @@ export default function BlockchainTransactions() {
         setTransactions([newTx, ...transactions]);
 
         // Reset form
-        setRecipientAddress("");
         setAmount("");
         setShowTxForm(false);
       }
@@ -505,6 +519,35 @@ export default function BlockchainTransactions() {
               </div>
             </div>
 
+            {/* Display destination address */}
+            <div className="mb-6 p-4 bg-indigo-900/20 rounded-xl border border-indigo-500/30 text-slate-300 text-sm">
+              <div className="flex items-start gap-3">
+                <Info className="h-5 w-5 text-indigo-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-medium text-indigo-400 mb-1">
+                    Destination Address
+                  </p>
+                  <div className="p-2 bg-slate-800/70 rounded border border-slate-700 font-mono text-xs break-all text-slate-300">
+                    {destinationAddress}
+                    <button
+                      onClick={() => copyToClipboard(destinationAddress)}
+                      className="ml-2 text-slate-400 hover:text-white transition-colors inline-block align-middle"
+                    >
+                      {copiedToClipboard ? (
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                      ) : (
+                        <Copy className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
+                  <p className="mt-2 text-sm">
+                    All transactions will be sent to this designated address for
+                    the SkillBridge student fund.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             {/* Get Testnet ETH Notice */}
             <div className="mb-6 p-4 bg-blue-900/20 rounded-xl border border-blue-500/30 text-slate-300 text-sm flex items-start gap-3">
               <Info className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
@@ -550,8 +593,9 @@ export default function BlockchainTransactions() {
                   className="overflow-hidden"
                 >
                   <div className="bg-slate-800/50 border border-slate-700/60 rounded-xl p-5 mb-6">
-                    <h3 className="text-lg font-medium text-white mb-4">
-                      Send Transaction
+                    <h3 className="text-lg font-medium text-white mb-4 flex items-center">
+                      <ArrowUpRight className="mr-2 h-5 w-5 text-blue-500" />
+                      Send ETH to Fund Students
                     </h3>
 
                     {error && (
@@ -603,18 +647,14 @@ export default function BlockchainTransactions() {
                       <div className="space-y-4">
                         <div>
                           <label className="block text-sm font-medium mb-2 text-slate-300">
-                            Recipient Address
+                            Recipient Address (Hardcoded)
                           </label>
-                          <Input
-                            type="text"
-                            placeholder="0x..."
-                            value={recipientAddress}
-                            onChange={(e) =>
-                              setRecipientAddress(e.target.value)
-                            }
-                            className="bg-slate-800/70 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                            disabled={isSending}
-                          />
+                          <div className="p-3 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 font-mono text-sm truncate">
+                            {formatAddress(destinationAddress)}
+                            <span className="text-slate-500 ml-2">
+                              (SkillBridge Student Fund)
+                            </span>
+                          </div>
                         </div>
 
                         <div>
@@ -649,7 +689,7 @@ export default function BlockchainTransactions() {
 
                           <Button
                             type="submit"
-                            disabled={isSending || !recipientAddress || !amount}
+                            disabled={isSending || !amount}
                             className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white"
                           >
                             {isSending ? (
