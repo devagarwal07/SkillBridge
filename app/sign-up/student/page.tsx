@@ -22,9 +22,6 @@ export default function SignUpPage() {
   const currentUser = "vkhare2909";
 
   useEffect(() => {
-    // if (isSignedIn) {
-    //   router.push("/onboarding/student");
-    // }
 
     // Add a subtle background animation effect
     const handleMouseMove = (e: MouseEvent) => {

@@ -198,9 +198,8 @@ function SelectionCard({
       >
         {/* Spotlight effect with standard Tailwind */}
         <div
-          className={`absolute inset-0 opacity-0 transition-opacity duration-300 ${
-            isHovered ? "opacity-100" : ""
-          }`}
+          className={`absolute inset-0 opacity-0 transition-opacity duration-300 ${isHovered ? "opacity-100" : ""
+            }`}
           style={{
             background:
               color === "blue"
