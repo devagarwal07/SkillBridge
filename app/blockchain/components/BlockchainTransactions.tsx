@@ -19,6 +19,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { DESTINATION_ADDRESS } from "../page";
+import {
+  FormattedReceiptData,
+  getTransactionReceiptFromHash,
+  formatReceiptData,
+} from "@/lib/blockchain/receipt-service";
+import TransactionReceipt from "@/components/blockchain/TransactionReceipt";
 
 // Use the updated time information
 const CURRENT_TIME = "2025-04-05 22:38:16";
@@ -65,6 +71,9 @@ export default function BlockchainTransactions({
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);
   const [networkSwitchInProgress, setNetworkSwitchInProgress] = useState(false);
   const [selectedTestnet, setSelectedTestnet] = useState(TESTNETS[0]);
+  const [receiptData, setReceiptData] = useState<FormattedReceiptData | null>(
+    null
+  );
 
   // Check if MetaMask is installed
   useEffect(() => {
@@ -275,6 +284,7 @@ export default function BlockchainTransactions({
     setTxHash(null);
     setTxSuccess(null);
     setError(null);
+    setReceiptData(null);
 
     try {
       if (window.ethereum) {
@@ -328,6 +338,20 @@ export default function BlockchainTransactions({
         };
 
         setTransactions([newTx, ...transactions]);
+
+        // Generate receipt data if transaction was successful
+        if (receipt?.status) {
+          // Convert ETH amount to USD (simplified for demo)
+          const ethPrice = 3150; // Hardcoded for simplicity
+          const amountUsd = (parseFloat(amount) * ethPrice).toFixed(2);
+
+          const transactionReceipt = await getTransactionReceiptFromHash(
+            transaction.hash,
+            amount,
+            amountUsd
+          );
+          setReceiptData(formatReceiptData(transactionReceipt));
+        }
 
         // Reset form
         setAmount("");
@@ -713,111 +737,150 @@ export default function BlockchainTransactions({
             </AnimatePresence>
 
             {/* Transaction History */}
-            <div>
-              <h3 className="flex items-center text-lg font-medium text-white mb-4">
-                Transaction History
-                <span className="ml-2 px-2 py-0.5 text-xs bg-slate-800 text-slate-400 rounded-full">
-                  {transactions.length}
-                </span>
-              </h3>
-
-              {transactions.length > 0 ? (
-                <div className="space-y-3">
-                  {transactions.map((tx) => (
-                    <div
-                      key={tx.id}
-                      className="bg-slate-800/50 border border-slate-700/60 rounded-lg p-4 hover:bg-slate-800/70 transition-colors cursor-pointer"
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          {tx.type === "received" ? (
-                            <div className="p-1.5 rounded-lg bg-green-900/30 text-green-400">
-                              <ArrowDownLeft className="h-4 w-4" />
-                            </div>
-                          ) : (
-                            <div className="p-1.5 rounded-lg bg-blue-900/30 text-blue-400">
-                              <ArrowUpRight className="h-4 w-4" />
-                            </div>
-                          )}
-                          <span className="font-medium text-white">
-                            {tx.type === "received" ? "Received" : "Sent"} ETH
-                          </span>
-                        </div>
-                        <span className="text-sm flex items-center text-slate-400 gap-1">
-                          <Clock className="h-3.5 w-3.5" />
-                          {formatTimestamp(tx.timestamp)}
-                        </span>
-                      </div>
-
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-                        <div className="flex flex-col">
-                          <span className="text-sm text-slate-400">
-                            {tx.type === "received" ? "From" : "To"}:
-                          </span>
-                          <span className="font-mono text-sm text-white">
-                            {formatAddress(
-                              tx.type === "received" ? tx.from : tx.to
-                            )}
-                          </span>
-                        </div>
-
-                        <div className="flex items-baseline gap-1">
-                          <span className="text-xl font-bold text-white">
-                            {tx.amount}
-                          </span>
-                          <span className="text-slate-400">ETH</span>
-                        </div>
-                      </div>
-
-                      <div className="flex justify-between items-center">
-                        <a
-                          href={`https://${selectedTestnet.id}.etherscan.io/tx/${tx.id}`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-sm text-blue-400 hover:text-blue-300 inline-flex items-center gap-1"
-                        >
-                          View on Etherscan <ExternalLink className="h-3 w-3" />
-                        </a>
-
-                        <div className="flex items-center gap-1.5">
-                          <div
-                            className={`h-2 w-2 rounded-full ${
-                              tx.status === "confirmed"
-                                ? "bg-green-500"
-                                : "bg-amber-500"
-                            }`}
-                          ></div>
-                          <span className="text-xs capitalize text-slate-400">
-                            {tx.status}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="bg-slate-800/50 border border-slate-700/60 rounded-xl p-8 text-center">
-                  <div className="h-16 w-16 bg-slate-700/50 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <ArrowUpRight className="h-8 w-8 text-slate-500" />
-                  </div>
-                  <h4 className="text-lg font-medium text-white mb-2">
-                    No Transactions Yet
-                  </h4>
-                  <p className="text-slate-400 max-w-md mx-auto mb-6">
-                    Your transaction history will appear here once you start
-                    sending or receiving ETH on the {selectedTestnet.name}{" "}
-                    testnet.
-                  </p>
+            {receiptData ? (
+              <div className="mb-6">
+                <h3 className="flex items-center text-lg font-medium text-white mb-4">
+                  Transaction Receipt
+                </h3>
+                <TransactionReceipt data={receiptData} />
+                <div className="mt-4 flex justify-end">
                   <Button
-                    onClick={() => setShowTxForm(true)}
-                    className="bg-slate-700 hover:bg-slate-600 text-white"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setReceiptData(null)}
+                    className="border-slate-700 text-slate-300 hover:bg-slate-800"
                   >
-                    <ArrowUpRight className="mr-2 h-4 w-4" />
-                    Send Your First Transaction
+                    Back to History
                   </Button>
                 </div>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div>
+                <h3 className="flex items-center text-lg font-medium text-white mb-4">
+                  Transaction History
+                  <span className="ml-2 px-2 py-0.5 text-xs bg-slate-800 text-slate-400 rounded-full">
+                    {transactions.length}
+                  </span>
+                </h3>
+
+                {transactions.length > 0 ? (
+                  <div className="space-y-3">
+                    {transactions.map((tx) => (
+                      <div
+                        key={tx.id}
+                        className="bg-slate-800/50 border border-slate-700/60 rounded-lg p-4 hover:bg-slate-800/70 transition-colors cursor-pointer"
+                        onClick={async () => {
+                          if (tx.status === "confirmed") {
+                            // Convert ETH amount to USD (simplified for demo)
+                            const ethPrice = 3150; // Hardcoded for simplicity
+                            const amountUsd = (
+                              parseFloat(tx.amount) * ethPrice
+                            ).toFixed(2);
+
+                            const transactionReceipt =
+                              await getTransactionReceiptFromHash(
+                                tx.id,
+                                tx.amount,
+                                amountUsd
+                              );
+                            setReceiptData(
+                              formatReceiptData(transactionReceipt)
+                            );
+                          }
+                        }}
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            {tx.type === "received" ? (
+                              <div className="p-1.5 rounded-lg bg-green-900/30 text-green-400">
+                                <ArrowDownLeft className="h-4 w-4" />
+                              </div>
+                            ) : (
+                              <div className="p-1.5 rounded-lg bg-blue-900/30 text-blue-400">
+                                <ArrowUpRight className="h-4 w-4" />
+                              </div>
+                            )}
+                            <span className="font-medium text-white">
+                              {tx.type === "received" ? "Received" : "Sent"} ETH
+                            </span>
+                          </div>
+                          <span className="text-sm flex items-center text-slate-400 gap-1">
+                            <Clock className="h-3.5 w-3.5" />
+                            {formatTimestamp(tx.timestamp)}
+                          </span>
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                          <div className="flex flex-col">
+                            <span className="text-sm text-slate-400">
+                              {tx.type === "received" ? "From" : "To"}:
+                            </span>
+                            <span className="font-mono text-sm text-white">
+                              {formatAddress(
+                                tx.type === "received" ? tx.from : tx.to
+                              )}
+                            </span>
+                          </div>
+
+                          <div className="flex items-baseline gap-1">
+                            <span className="text-xl font-bold text-white">
+                              {tx.amount}
+                            </span>
+                            <span className="text-slate-400">ETH</span>
+                          </div>
+                        </div>
+
+                        <div className="flex justify-between items-center">
+                          <a
+                            href={`https://${selectedTestnet.id}.etherscan.io/tx/${tx.id}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-sm text-blue-400 hover:text-blue-300 inline-flex items-center gap-1"
+                          >
+                            View on Etherscan{" "}
+                            <ExternalLink className="h-3 w-3" />
+                          </a>
+
+                          <div className="flex items-center gap-1.5">
+                            <div
+                              className={`h-2 w-2 rounded-full ${
+                                tx.status === "confirmed"
+                                  ? "bg-green-500"
+                                  : "bg-amber-500"
+                              }`}
+                            ></div>
+                            <span className="text-xs capitalize text-slate-400">
+                              {tx.status}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="bg-slate-800/50 border border-slate-700/60 rounded-xl p-8 text-center">
+                    <div className="h-16 w-16 bg-slate-700/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <ArrowUpRight className="h-8 w-8 text-slate-500" />
+                    </div>
+                    <h4 className="text-lg font-medium text-white mb-2">
+                      No Transactions Yet
+                    </h4>
+                    <p className="text-slate-400 max-w-md mx-auto mb-6">
+                      Your transaction history will appear here once you start
+                      sending or receiving ETH on the {selectedTestnet.name}{" "}
+                      testnet.
+                    </p>
+                    <Button
+                      onClick={() => setShowTxForm(true)}
+                      className="bg-slate-700 hover:bg-slate-600 text-white"
+                    >
+                      <ArrowUpRight className="mr-2 h-4 w-4" />
+                      Send Your First Transaction
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
           </>
         )}
       </div>

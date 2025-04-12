@@ -1,5 +1,5 @@
 /**
- * Service for fetching cryptocurrency prices
+ * Service for fetching cryptocurrency prices using free APIs with fallbacks
  */
 
 // Define types for price data
@@ -8,6 +8,7 @@ export interface PriceData {
   change24h?: number;
   timestamp: Date;
   isEstimate?: boolean;
+  source?: string;
 }
 
 export interface ConversionRates {
@@ -16,94 +17,150 @@ export interface ConversionRates {
 }
 
 /**
- * Fetch ETH price from CoinGecko API
+ * Fetch ETH price from multiple APIs with fallbacks
  */
 export const fetchEthPrice = async (): Promise<PriceData> => {
-  const API_KEY = process.env.NEXT_PUBLIC_COINGECKO_API_KEY;
+  // List of free APIs for crypto prices
+  const apiSources = [
+    {
+      name: "CoinGecko",
+      url: "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd&include_24hr_change=true",
+      parse: (data: any) => ({
+        price: data.ethereum.usd,
+        change24h: data.ethereum.usd_24h_change || 0,
+      }),
+    },
+    {
+      name: "Binance",
+      url: "https://api.binance.com/api/v3/ticker/24hr?symbol=ETHUSDT",
+      parse: (data: any) => ({
+        price: parseFloat(data.lastPrice),
+        change24h: parseFloat(data.priceChangePercent),
+      }),
+    },
+    {
+      name: "CryptoCompare",
+      url: "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD",
+      parse: (data: any) => ({
+        price: data.USD,
+        change24h: 0, // Basic API doesn't include 24h change
+      }),
+    },
+  ];
 
+  // Try each API in sequence until one works
+  for (const api of apiSources) {
+    try {
+      const response = await fetch(api.url, {
+        headers: { Accept: "application/json" },
+        // Don't cache to get fresh data
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        throw new Error(`${api.name} API Error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const parsedData = api.parse(data);
+
+      return {
+        price: parsedData.price,
+        change24h: parsedData.change24h,
+        timestamp: new Date(),
+        source: api.name,
+      };
+    } catch (error) {
+      console.warn(`${api.name} API failed:`, error);
+      // Continue to next API
+    }
+  }
+
+  // Fallback to server API if all direct calls fail
   try {
-    // Using CoinGecko API with API key if available
-    const baseUrl = "https://api.coingecko.com/api/v3/simple/price";
-    const url = `${baseUrl}?ids=ethereum&vs_currencies=usd&include_24hr_change=true`;
-
-    const headers: HeadersInit = {
-      Accept: "application/json",
-    };
-
-    // Add API key if available (CoinGecko requires API key for production use)
-    if (API_KEY) {
-      headers["x-cg-api-key"] = API_KEY;
-    }
-
-    const response = await fetch(url, {
-      headers,
-      // Cache for 1 minute on edge, CDN, or browser
-      cache: "force-cache",
+    const response = await fetch("/api/blockchain/eth-price", {
+      cache: "no-store", // Don't cache to get fresh data
     });
-
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.status}`);
-    }
-
     const data = await response.json();
 
     return {
-      price: data.ethereum.usd,
-      change24h: data.ethereum.usd_24h_change || 0,
-      timestamp: new Date(),
+      price: data.price,
+      change24h: data.change24h || 0,
+      timestamp: new Date(data.timestamp),
+      isEstimate: data.isEstimate,
+      source: "Server API",
     };
-  } catch (error) {
-    console.error("Error fetching ETH price:", error);
+  } catch (backupError) {
+    console.error("All price APIs failed:", backupError);
 
-    // Fallback to server API if direct call fails
-    try {
-      const response = await fetch("/api/blockchain/eth-price");
-      const data = await response.json();
-
-      return {
-        price: data.price,
-        change24h: data.change24h || 0,
-        timestamp: new Date(data.timestamp),
-        isEstimate: data.isEstimate,
-      };
-    } catch (backupError) {
-      console.error("Backup API also failed:", backupError);
-
-      // Last resort fallback to a reasonable estimate
-      return {
-        price: 3150.42,
-        timestamp: new Date(),
-        isEstimate: true,
-      };
-    }
+    // Last resort fallback to a reasonable estimate with timestamp
+    return {
+      price: 3150.42, // Fallback price
+      timestamp: new Date(),
+      isEstimate: true,
+      source: "Fallback Value",
+    };
   }
 };
 
 /**
- * Get currency conversion rates using external API
+ * Get USD to INR conversion rate from free APIs
+ */
+export const getUsdToInrRate = async (): Promise<number> => {
+  // List of free APIs for currency conversion
+  const apiSources = [
+    {
+      name: "ExchangeRate-API",
+      url: "https://open.er-api.com/v6/latest/USD",
+      parse: (data: any) => data.rates?.INR,
+    },
+    {
+      name: "Fixer.io",
+      url: "https://api.exchangerate.host/latest?base=USD&symbols=INR",
+      parse: (data: any) => data.rates?.INR,
+    },
+  ];
+
+  // Try each API in sequence until one works
+  for (const api of apiSources) {
+    try {
+      const response = await fetch(api.url, {
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        throw new Error(`${api.name} API Error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const rate = api.parse(data);
+
+      if (rate && typeof rate === "number" && !isNaN(rate)) {
+        return rate;
+      } else {
+        throw new Error(`Invalid rate data from ${api.name}`);
+      }
+    } catch (error) {
+      console.warn(`${api.name} API failed:`, error);
+      // Continue to next API
+    }
+  }
+
+  // Fallback to a reasonable estimate
+  return 83.12; // Fallback USD to INR rate
+};
+
+/**
+ * Get currency conversion rates using free external APIs
  */
 export const getConversionRates = async (): Promise<ConversionRates> => {
-  const API_KEY = process.env.NEXT_PUBLIC_CURRENCY_CONVERTER_API_KEY;
-
   try {
-    // First get ETH/USD rate
-    const ethData = await fetchEthPrice();
-
-    // Then get USD/INR rate from currency converter API
-    let usdInrRate = 83.12; // Default fallback rate
-
-    if (API_KEY) {
-      const url = `https://api.currencyapi.com/v3/latest?apikey=${API_KEY}&currencies=INR&base_currency=USD`;
-
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        usdInrRate = data.data.INR.value;
-      } catch (error) {
-        console.error("Currency API error:", error);
-        // Continue with fallback rate
-      }
-    }
+    // Fetch both rates in parallel
+    const [ethData, usdInrRate] = await Promise.all([
+      fetchEthPrice(),
+      getUsdToInrRate(),
+    ]);
 
     return {
       ETH_USD: ethData.price,

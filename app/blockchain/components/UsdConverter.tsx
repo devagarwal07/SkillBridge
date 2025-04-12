@@ -28,9 +28,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DESTINATION_ADDRESS } from "../page";
 import { motion } from "framer-motion";
-import { fetchEthPrice } from "@/lib/blockchain/price-service";
 import { getProvider } from "@/lib/blockchain/provider";
 import { debounce } from "@/lib/utils";
+import {
+  FormattedReceiptData,
+  getTransactionReceiptFromHash,
+  formatReceiptData,
+} from "@/lib/blockchain/receipt-service";
+import TransactionReceipt from "@/components/blockchain/TransactionReceipt";
 
 export default function UsdConverter() {
   const [ethAmount, setEthAmount] = useState("");
@@ -50,6 +55,10 @@ export default function UsdConverter() {
   >([]);
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);
   const [isEstimatedPrice, setIsEstimatedPrice] = useState(false);
+  const [dataSource, setDataSource] = useState("");
+  const [receiptData, setReceiptData] = useState<FormattedReceiptData | null>(
+    null
+  );
 
   // Check wallet connection
   const checkWalletConnection = useCallback(async () => {
@@ -74,6 +83,101 @@ export default function UsdConverter() {
       }
     }
   }, []);
+
+  // Fetch ETH price with multiple API sources
+  const fetchEthPrice = async () => {
+    try {
+      const priceData = await fetch("/api/blockchain/eth-price", {
+        cache: "no-store", // No caching to get latest price
+      });
+
+      if (!priceData.ok) {
+        throw new Error(`API error: ${priceData.status}`);
+      }
+
+      return await priceData.json();
+    } catch (error) {
+      console.error("Error fetching ETH price:", error);
+
+      // Try direct API call as backup
+      try {
+        const response = await fetch(
+          "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd&include_24hr_change=true"
+        );
+        const data = await response.json();
+
+        return {
+          price: data.ethereum.usd,
+          change24h: data.ethereum.usd_24h_change || 0,
+          timestamp: new Date().toISOString(),
+          source: "CoinGecko Direct",
+        };
+      } catch (backupError) {
+        console.error("Backup API also failed:", backupError);
+
+        // Fallback to a default value if API fails
+        return {
+          price: 3150.42,
+          change24h: 0,
+          timestamp: new Date().toISOString(),
+          isEstimate: true,
+          source: "Fallback",
+        };
+      }
+    }
+  };
+
+  // Fetch ETH price and update history
+  const updateEthPrice = async () => {
+    setIsRefreshing(true);
+    try {
+      const priceData = await fetchEthPrice();
+
+      setEthPrice(priceData.price);
+      setPriceChange24h(priceData.change24h || 0);
+      setIsEstimatedPrice(!!priceData.isEstimate);
+
+      const now = new Date();
+      const newPoint = {
+        time: now.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        price: priceData.price,
+      };
+
+      setPriceHistory((prevHistory) => {
+        const updatedHistory = [...prevHistory, newPoint];
+        return updatedHistory.length > 6
+          ? updatedHistory.slice(-6)
+          : updatedHistory;
+      });
+
+      setLastUpdated(now.toLocaleTimeString());
+
+      // Update the data source info
+      setDataSource(priceData.source || "Unknown");
+
+      // Update converted values if they exist
+      if (ethAmount)
+        handleEthChange({
+          target: { value: ethAmount },
+        } as React.ChangeEvent<HTMLInputElement>);
+      if (usdAmount)
+        handleUsdChange({
+          target: { value: usdAmount },
+        } as React.ChangeEvent<HTMLInputElement>);
+
+      return priceData.price;
+    } catch (error) {
+      console.error("Failed to fetch ETH price:", error);
+      setIsEstimatedPrice(true);
+      return null;
+    } finally {
+      setIsRefreshing(false);
+      setIsLoading(false);
+    }
+  };
 
   // Update price on component mount
   useEffect(() => {
@@ -104,53 +208,18 @@ export default function UsdConverter() {
     };
   }, [checkWalletConnection]);
 
-  // Fetch ETH price and update history
-  const updateEthPrice = async () => {
-    setIsRefreshing(true);
-    try {
-      const priceData = await fetchEthPrice();
+  // Start auto-refresh timer for price updates
+  useEffect(() => {
+    // Initial update
+    updateEthPrice();
 
-      setEthPrice(priceData.price);
-      setPriceChange24h(priceData.change24h || 0);
-      setIsEstimatedPrice(!!priceData.isEstimate);
+    // Set up periodic refresh (every minute)
+    const timer = setInterval(() => {
+      updateEthPrice();
+    }, 60000); // 60 seconds
 
-      const now = new Date();
-      const newPoint = {
-        time: now.toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-        price: priceData.price,
-      };
-
-      setPriceHistory((prevHistory) => {
-        const updatedHistory = [...prevHistory, newPoint];
-        return updatedHistory.length > 6
-          ? updatedHistory.slice(-6)
-          : updatedHistory;
-      });
-
-      setLastUpdated(now.toLocaleTimeString());
-
-      // Update converted values if they exist
-      if (ethAmount)
-        handleEthChange({
-          target: { value: ethAmount },
-        } as React.ChangeEvent<HTMLInputElement>);
-      if (usdAmount)
-        handleUsdChange({
-          target: { value: usdAmount },
-        } as React.ChangeEvent<HTMLInputElement>);
-
-      return priceData.price;
-    } catch (error) {
-      console.error("Failed to fetch ETH price:", error);
-      return null;
-    } finally {
-      setIsRefreshing(false);
-      setIsLoading(false);
-    }
-  };
+    return () => clearInterval(timer);
+  }, []);
 
   const handleEthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -211,6 +280,7 @@ export default function UsdConverter() {
     setIsSending(true);
     setTxHash("");
     setTxError("");
+    setReceiptData(null);
 
     try {
       if (!window.ethereum) {
@@ -255,6 +325,14 @@ export default function UsdConverter() {
       if (receipt.status !== 1) {
         throw new Error("Transaction failed");
       }
+
+      // Generate receipt data
+      const transactionReceipt = await getTransactionReceiptFromHash(
+        tx.hash,
+        ethAmount,
+        usdAmount
+      );
+      setReceiptData(formatReceiptData(transactionReceipt));
     } catch (error) {
       console.error("Error sending transaction:", error);
       setTxError(
@@ -449,8 +527,9 @@ export default function UsdConverter() {
 
                   <PriceChart />
 
-                  <div className="text-xs text-slate-500 flex justify-end">
-                    Last updated: {lastUpdated}
+                  <div className="text-xs text-slate-500 flex justify-between">
+                    <span>Source: {dataSource || "Unknown"}</span>
+                    <span>Last updated: {lastUpdated}</span>
                   </div>
                 </div>
 
@@ -536,123 +615,127 @@ export default function UsdConverter() {
         </Card>
 
         <div className="space-y-6">
-          <Card className="bg-blue-900/30 border-blue-800/60">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <ArrowUpRight className="h-5 w-5 text-blue-400" />
-                Transaction Details
-              </CardTitle>
-              <CardDescription className="text-slate-400">
-                Information about your ETH/USD conversion transactions
-              </CardDescription>
-            </CardHeader>
+          {receiptData ? (
+            <TransactionReceipt data={receiptData} />
+          ) : (
+            <Card className="bg-blue-900/30 border-blue-800/60">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <ArrowUpRight className="h-5 w-5 text-blue-400" />
+                  Transaction Details
+                </CardTitle>
+                <CardDescription className="text-slate-400">
+                  Information about your ETH/USD conversion transactions
+                </CardDescription>
+              </CardHeader>
 
-            <CardContent className="space-y-4">
-              {/* Destination address info */}
-              <div className="bg-blue-900/20 rounded-lg p-4 border border-blue-900/30">
-                <h4 className="text-blue-400 font-medium mb-2 flex items-center">
-                  <Wallet className="h-4 w-4 mr-1.5" />
-                  Destination Address
-                </h4>
-                <div className="bg-slate-900 p-3 rounded border border-slate-700 break-all font-mono text-slate-300 text-xs flex justify-between items-center">
-                  <span className="truncate pr-2">{DESTINATION_ADDRESS}</span>
-                  <button
-                    onClick={() => copyToClipboard(DESTINATION_ADDRESS)}
-                    className="text-slate-400 hover:text-white transition-colors ml-2 flex-shrink-0"
-                  >
-                    {copiedToClipboard ? (
-                      <CheckCircle className="h-4 w-4 text-green-500" />
+              <CardContent className="space-y-4">
+                {/* Destination address info */}
+                <div className="bg-blue-900/20 rounded-lg p-4 border border-blue-900/30">
+                  <h4 className="text-blue-400 font-medium mb-2 flex items-center">
+                    <Wallet className="h-4 w-4 mr-1.5" />
+                    Destination Address
+                  </h4>
+                  <div className="bg-slate-900 p-3 rounded border border-slate-700 break-all font-mono text-slate-300 text-xs flex justify-between items-center">
+                    <span className="truncate pr-2">{DESTINATION_ADDRESS}</span>
+                    <button
+                      onClick={() => copyToClipboard(DESTINATION_ADDRESS)}
+                      className="text-slate-400 hover:text-white transition-colors ml-2 flex-shrink-0"
+                    >
+                      {copiedToClipboard ? (
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                      ) : (
+                        <Copy className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
+                  <p className="mt-2 text-xs text-slate-400">
+                    All transactions will be sent to the SkillBridge student
+                    fund address
+                  </p>
+                </div>
+
+                {/* Connected wallet */}
+                {account && (
+                  <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700/50">
+                    <h4 className="text-slate-300 font-medium mb-2 flex items-center">
+                      <Wallet className="h-4 w-4 mr-1.5 text-indigo-400" />
+                      Connected Wallet
+                    </h4>
+                    <div className="font-mono text-sm text-white">
+                      {formatAddress(account)}
+                    </div>
+                  </div>
+                )}
+
+                {txHash ? (
+                  <div className="bg-green-900/20 rounded-lg p-4 border border-green-800/50">
+                    <h4 className="text-green-400 font-medium flex items-center mb-2">
+                      <CheckCircle className="h-4 w-4 mr-2" />
+                      Transaction Submitted
+                    </h4>
+                    <p className="text-slate-300 text-sm mb-2">
+                      Your transaction has been submitted to the blockchain
+                    </p>
+                    <div className="bg-slate-900 p-2 rounded border border-slate-700 break-all font-mono text-xs text-slate-300">
+                      {txHash}
+                    </div>
+                    <div className="mt-3 flex justify-end">
+                      <a
+                        href={`https://sepolia.etherscan.io/tx/${txHash}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center text-blue-400 hover:text-blue-300 text-sm"
+                      >
+                        View on Etherscan
+                        <ExternalLink className="h-3 w-3 ml-1" />
+                      </a>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="h-[230px] flex flex-col items-center justify-center text-center">
+                    <div className="h-16 w-16 mb-4 rounded-full bg-slate-800/80 flex items-center justify-center">
+                      <ArrowUpRight className="h-8 w-8 text-slate-600" />
+                    </div>
+                    <h4 className="text-slate-300 font-medium">
+                      No Recent Transactions
+                    </h4>
+                    <p className="text-slate-500 text-sm mt-1 max-w-xs">
+                      When you send ETH to support students, your transaction
+                      details will appear here
+                    </p>
+
+                    {account ? (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="mt-4 border-slate-700 text-blue-400 hover:bg-slate-800"
+                        onClick={() => {
+                          const ethInput = document.getElementById(
+                            "eth-amount"
+                          ) as HTMLInputElement;
+                          if (ethInput) ethInput.focus();
+                        }}
+                      >
+                        <ArrowUpRight className="h-3.5 w-3.5 mr-1.5" />
+                        Make a Transaction
+                      </Button>
                     ) : (
-                      <Copy className="h-4 w-4" />
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="mt-4 border-slate-700 text-blue-400 hover:bg-slate-800"
+                        onClick={connectWallet}
+                      >
+                        <Wallet className="h-3.5 w-3.5 mr-1.5" />
+                        Connect Wallet
+                      </Button>
                     )}
-                  </button>
-                </div>
-                <p className="mt-2 text-xs text-slate-400">
-                  All transactions will be sent to the SkillBridge student fund
-                  address
-                </p>
-              </div>
-
-              {/* Connected wallet */}
-              {account && (
-                <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700/50">
-                  <h4 className="text-slate-300 font-medium mb-2 flex items-center">
-                    <Wallet className="h-4 w-4 mr-1.5 text-indigo-400" />
-                    Connected Wallet
-                  </h4>
-                  <div className="font-mono text-sm text-white">
-                    {formatAddress(account)}
                   </div>
-                </div>
-              )}
-
-              {txHash ? (
-                <div className="bg-green-900/20 rounded-lg p-4 border border-green-800/50">
-                  <h4 className="text-green-400 font-medium flex items-center mb-2">
-                    <CheckCircle className="h-4 w-4 mr-2" />
-                    Transaction Submitted
-                  </h4>
-                  <p className="text-slate-300 text-sm mb-2">
-                    Your transaction has been submitted to the blockchain
-                  </p>
-                  <div className="bg-slate-900 p-2 rounded border border-slate-700 break-all font-mono text-xs text-slate-300">
-                    {txHash}
-                  </div>
-                  <div className="mt-3 flex justify-end">
-                    <a
-                      href={`https://sepolia.etherscan.io/tx/${txHash}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center text-blue-400 hover:text-blue-300 text-sm"
-                    >
-                      View on Etherscan
-                      <ExternalLink className="h-3 w-3 ml-1" />
-                    </a>
-                  </div>
-                </div>
-              ) : (
-                <div className="h-[230px] flex flex-col items-center justify-center text-center">
-                  <div className="h-16 w-16 mb-4 rounded-full bg-slate-800/80 flex items-center justify-center">
-                    <ArrowUpRight className="h-8 w-8 text-slate-600" />
-                  </div>
-                  <h4 className="text-slate-300 font-medium">
-                    No Recent Transactions
-                  </h4>
-                  <p className="text-slate-500 text-sm mt-1 max-w-xs">
-                    When you send ETH to support students, your transaction
-                    details will appear here
-                  </p>
-
-                  {account ? (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="mt-4 border-slate-700 text-blue-400 hover:bg-slate-800"
-                      onClick={() => {
-                        const ethInput = document.getElementById(
-                          "eth-amount"
-                        ) as HTMLInputElement;
-                        if (ethInput) ethInput.focus();
-                      }}
-                    >
-                      <ArrowUpRight className="h-3.5 w-3.5 mr-1.5" />
-                      Make a Transaction
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="mt-4 border-slate-700 text-blue-400 hover:bg-slate-800"
-                      onClick={connectWallet}
-                    >
-                      <Wallet className="h-3.5 w-3.5 mr-1.5" />
-                      Connect Wallet
-                    </Button>
-                  )}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                )}
+              </CardContent>
+            </Card>
+          )}
 
           {/* Conversion rates info card */}
           <Card className="bg-blue-900/30 border-blue-800/60">

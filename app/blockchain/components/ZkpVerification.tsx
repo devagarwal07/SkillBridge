@@ -37,42 +37,77 @@ const verifyWithZKP = async (
 ): Promise<VerificationResult> => {
   return new Promise((resolve) => {
     // Simulate verification delay
-    setTimeout(() => {
-      // Hardcoded valid Aadhar details for demo
-      const validAadhar = "1234-5678-9012";
-      const isValid = aadharNumber === validAadhar;
+    setTimeout(async () => {
+      try {
+        // Create image hash
+        const imageHash = await createImageHash(image);
 
-      if (isValid) {
-        resolve({
-          success: true,
-          message: "Identity verified successfully using zero-knowledge proof",
+        // Call API endpoint for verification with image hash
+        const response = await fetch("/api/blockchain/verify-zkp", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ aadharNumber, imageHash }),
         });
-      } else {
-        // Provide more detailed error message based on the input
-        if (!aadharNumber.match(/^\d{4}-\d{4}-\d{4}$/)) {
-          resolve({
-            success: false,
-            message: "Invalid Aadhar format. Please use format XXXX-XXXX-XXXX",
-          });
-        } else {
-          resolve({
-            success: false,
-            message:
-              "Verification failed. The provided Aadhar number doesn't match our records",
-          });
+
+        if (!response.ok) {
+          throw new Error(
+            `Verification failed with status: ${response.status}`
+          );
         }
+
+        const result = await response.json();
+        resolve(result);
+      } catch (error) {
+        console.error("Verification error:", error);
+        resolve({
+          success: false,
+          message: "Verification process failed. Please try again.",
+        });
       }
-    }, 3000);
+    }, 2000);
   });
 };
 
-// Sample hardcoded Aadhar image (base64 encoded placeholder)
-const SAMPLE_AADHAR_IMAGE =
-  "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgZmlsbD0iIzE3MjU0YyIvPjx0ZXh0IHg9IjUwJSIgeT0iMzUlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiNmZmZmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkFBREhBUiBDQVJEPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiNmZmZmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPjEyMzQtNTY3OC05MDEyPC90ZXh0Pjx0ZXh0IHg9IjUwJSIgeT0iNjUlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiNmZmZmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlNhbXBsZSBOYW1lPC90ZXh0Pjxwb2x5Z29uIHBvaW50cz0iMzIwLDgwIDM2MCw4MCAzNjAsMTYwIDMyMCwxNjAiIGZpbGw9IiMzMzMiLz48L3N2Zz4=";
+// Helper function to create image hash
+async function createImageHash(imageData: string): Promise<string> {
+  try {
+    // Convert the base64 image to array buffer for hashing
+    const base64Data = imageData.split(",")[1];
+    const binaryString = atob(base64Data);
+    const bytes = new Uint8Array(binaryString.length);
+
+    for (let i = 0; i < binaryString.length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    // Use SubtleCrypto for hashing (browser Web Crypto API)
+    const hashBuffer = await crypto.subtle.digest("SHA-256", bytes.buffer);
+
+    // Convert to hex string
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+  } catch (error) {
+    console.error("Error creating image hash:", error);
+
+    // Fallback to a simpler hash if SubtleCrypto fails
+    let hash = 0;
+    const str = imageData.substring(0, 10000); // Use first 10000 chars
+
+    for (let i = 0; i < str.length; i++) {
+      hash = (hash << 5) - hash + str.charCodeAt(i);
+      hash |= 0; // Convert to 32bit integer
+    }
+
+    return Math.abs(hash).toString(16).padStart(64, "0");
+  }
+}
 
 interface VerificationResult {
   success: boolean;
   message: string;
+  proof?: string;
 }
 
 export default function ZkpVerification() {
@@ -87,8 +122,10 @@ export default function ZkpVerification() {
   const [showIntroAnimation, setShowIntroAnimation] = useState(true);
   const [validationError, setValidationError] = useState<string | null>(null);
 
-  // For demo purposes we'll provide a sample value
+  // For demo purposes we'll provide sample values
   const SAMPLE_AADHAR_NUMBER = "1234-5678-9012";
+  const SAMPLE_AADHAR_IMAGE =
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mN8/x8AAuMB8DtXNJsAAAAASUVORK5CYII=";
 
   // Disable intro animation after initial render
   useEffect(() => {
@@ -176,16 +213,16 @@ export default function ZkpVerification() {
     setValidationError(null);
 
     try {
-      // In a real implementation, we would call the API with the actual data
+      // Call the API with the actual data
       const result = await verifyWithZKP(aadharNumber, aadharImage);
       setVerificationResult(result);
 
-      // If verification was successful, we could store a verification token in local storage
+      // Store verification result if successful
       if (result.success) {
         try {
-          // Store verification status (in a real app, we'd use a secure token)
           localStorage.setItem("zkp_verified", "true");
           localStorage.setItem("zkp_timestamp", Date.now().toString());
+          localStorage.setItem("zkp_proof_id", result.proof || "");
         } catch (storageError) {
           console.error("Error storing verification status:", storageError);
         }
