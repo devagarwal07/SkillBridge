@@ -22,9 +22,9 @@ export default function SignUpPage() {
   const currentUser = "vkhare2909";
 
   useEffect(() => {
-    if (isSignedIn) {
-      router.push("/onboarding");
-    }
+    // if (isSignedIn) {
+    //   router.push("/onboarding/student");
+    // }
 
     // Add a subtle background animation effect
     const handleMouseMove = (e: MouseEvent) => {
@@ -87,7 +87,7 @@ export default function SignUpPage() {
             <div className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 rounded-xl p-6 shadow-xl">
               <SignUp
                 signInUrl="/sign-in"
-                redirectUrl="/onboarding"
+                forceRedirectUrl="/onboarding/student"
                 appearance={{
                   elements: {
                     formButtonPrimary:

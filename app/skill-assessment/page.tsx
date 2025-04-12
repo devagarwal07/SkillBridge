@@ -622,6 +622,26 @@ export default function SkillAssessment() {
                 )}
               </button>
             </Link>
+            <button
+              className={cn(
+                "px-6 py-2 font-medium text-sm transition-colors relative",
+                activeTab === "ai-interview"
+                  ? "text-indigo-400"
+                  : "text-gray-400 hover:text-gray-200"
+              )}
+              onClick={() => {
+                setActiveTab("ai-interview");
+                window.location.href = "http://127.0.0.1:5501/index.html"; // Redirect to another local server
+              }}
+            >
+              AI Interview
+              {activeTab === "ai-interview" && (
+                <motion.div
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-500"
+                  layoutId="activeTab"
+                />
+              )}
+            </button>
           </div>
 
           {activeTab === "my-skills" ? (
