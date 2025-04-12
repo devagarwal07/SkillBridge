@@ -23,7 +23,7 @@ export default function SignInPage() {
 
   useEffect(() => {
     if (isSignedIn) {
-      router.push("/onboarding");
+      router.push("/onboarding/student");
     }
 
     // Add a subtle background animation effect
